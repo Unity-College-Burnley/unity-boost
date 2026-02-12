@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unity Boost - Edition #5</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --purple-900: #1a0525;
+      --purple-800: #2d0f42;
+      --purple-700: #3d1452;
+      --purple-600: #6b2d7b;
+      --purple-500: #8e44ad;
+      --purple-400: #a569bd;
+      --purple-300: #d4a5e0;
+      --purple-200: #e8d0f0;
+      --purple-100: #f7f0fa;
+      --purple-50: #faf5fd;
+      --warm-white: #fefcff;
+      --text-primary: #1a1a2e;
+      --text-secondary: #4a4a5a;
+      --text-muted: #7a7a8a;
+      --amber-100: #fff3e0;
+      --amber-600: #e65100;
+      --green-100: #e8f5e9;
+      --green-700: #2e7d32;
+      --blue-100: #e3f2fd;
+      --blue-700: #1565c0;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background-color: #f0eaf4;
+      color: var(--text-primary);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .newsletter {
+      max-width: 680px;
+      margin: 0 auto;
+      background-color: var(--warm-white);
+    }
+
+    /* HEADER */
+    .header {
+      background: linear-gradient(160deg, var(--purple-900) 0%, var(--purple-700) 40%, var(--purple-500) 100%);
+      padding: 40px 40px 35px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .header-logo {
+      display: block;
+      max-width: 150px;
+      margin-bottom: 25px;
+    }
+
+    .header-title {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 48px;
+      color: #fff;
+      letter-spacing: -0.5px;
+      line-height: 1.1;
+      margin-bottom: 6px;
+    }
+
+    .header-emoji {
+      font-size: 28px;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .header-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .header-author {
+      font-size: 15px;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .header-role {
+      font-size: 13px;
+      color: var(--purple-300);
+    }
+
+    .header-edition {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      padding: 4px 14px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #fff;
+      letter-spacing: 0.5px;
+    }
+
+    /* MEME BANNER */
+    .meme-banner {
+      background: var(--purple-900);
+      padding: 28px 40px;
+      text-align: center;
+      border-bottom: 3px solid var(--purple-600);
+    }
+
+    .meme-emoji { font-size: 36px; margin-bottom: 8px; }
+
+    .meme-text {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 20px;
+      color: var(--purple-200);
+      font-style: italic;
+      line-height: 1.5;
+    }
+
+    .meme-attribution {
+      font-size: 12px;
+      color: var(--purple-400);
+      margin-top: 8px;
+    }
+
+    /* CONTENT SECTIONS */
+    .section {
+      padding: 36px 40px;
+    }
+
+    .section + .section {
+      border-top: 1px solid var(--purple-200);
+    }
+
+    .section-label {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--purple-500);
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 28px;
+      color: var(--purple-700);
+      margin-bottom: 18px;
+      line-height: 1.2;
+    }
+
+    .section-title-sm {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 22px;
+      color: var(--purple-700);
+      margin-bottom: 14px;
+      line-height: 1.3;
+    }
+
+    p { margin-bottom: 14px; font-size: 15px; color: var(--text-secondary); }
+    p:last-child { margin-bottom: 0; }
+
+    strong { color: var(--text-primary); }
+    em { font-style: italic; }
+
+    a { color: var(--purple-600); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; }
+    a:hover { color: var(--purple-500); }
+
+    /* CALLOUT BOX */
+    .callout {
+      background: var(--purple-50);
+      border-left: 4px solid var(--purple-500);
+      border-radius: 0 8px 8px 0;
+      padding: 22px 24px;
+      margin: 18px 0;
+    }
+
+    .callout p { color: var(--purple-700); }
+
+    /* TOOL SPOTLIGHT */
+    .tool-header {
+      background: linear-gradient(135deg, #4285f4 0%, #34a853 40%, #fbbc04 80%, #ea4335 100%);
+      border-radius: 12px;
+      padding: 30px;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .tool-header-icon { font-size: 36px; margin-bottom: 6px; }
+    .tool-header h3 { font-family: 'DM Serif Display', Georgia, serif; font-size: 32px; color: #fff; margin: 0; }
+    .tool-header p { font-size: 14px; color: rgba(255,255,255,0.85); margin: 4px 0 0; }
+
+    .feature-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--purple-700);
+      margin-bottom: 10px;
+    }
+
+    .audio-formats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin: 16px 0;
+    }
+
+    .audio-format {
+      background: var(--purple-100);
+      border-radius: 8px;
+      padding: 14px 16px;
+    }
+
+    .audio-format strong {
+      display: block;
+      font-size: 13px;
+      color: var(--purple-700);
+      margin-bottom: 2px;
+    }
+
+    .audio-format span {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .info-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin: 18px 0;
+    }
+
+    .info-card {
+      border-radius: 10px;
+      padding: 18px;
+    }
+
+    .info-card.safe { background: var(--green-100); }
+    .info-card.free { background: var(--blue-100); }
+
+    .info-card-icon { font-size: 20px; margin-bottom: 6px; }
+    .info-card h4 { font-size: 14px; margin-bottom: 6px; }
+    .info-card.safe h4 { color: var(--green-700); }
+    .info-card.free h4 { color: var(--blue-700); }
+    .info-card p { font-size: 13px; line-height: 1.5; margin: 0; }
+
+    .tutorial-placeholder {
+      background: #f8f8f8;
+      border: 2px dashed #ddd;
+      border-radius: 10px;
+      padding: 30px;
+      text-align: center;
+      margin: 18px 0;
+    }
+
+    .tutorial-placeholder .icon { font-size: 28px; margin-bottom: 6px; }
+    .tutorial-placeholder p { font-size: 14px; color: var(--text-muted); margin: 0; }
+
+    .learn-more-links { margin-top: 16px; }
+    .learn-more-links p { font-size: 14px; margin-bottom: 6px; }
+
+    /* NEWS CARDS */
+    .news-card {
+      border-radius: 10px;
+      padding: 22px 24px;
+      margin-bottom: 14px;
+    }
+
+    .news-card.highlight { background: var(--purple-100); }
+
+    .news-card.teaser {
+      background: var(--amber-100);
+      border-left: 4px solid #ff9800;
+      border-radius: 0 10px 10px 0;
+    }
+
+    .news-card h3 {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .news-card.highlight h3 { color: var(--purple-700); }
+    .news-card.teaser h3 { color: var(--amber-600); }
+
+    .news-card p { font-size: 14px; margin-bottom: 8px; }
+    .news-card p:last-child { margin-bottom: 0; }
+
+    /* PROMPTS GRID */
+    .prompts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .prompt-card {
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .prompt-card-body {
+      background: var(--purple-700);
+      padding: 18px 16px;
+      min-height: 120px;
+      display: flex;
+      align-items: center;
+    }
+
+    .prompt-card-body p {
+      font-size: 14px;
+      color: #fff;
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    .prompt-card-tip {
+      background: var(--purple-100);
+      padding: 12px 16px;
+    }
+
+    .prompt-card-tip p {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    /* READING LINKS */
+    .reading-link {
+      padding: 16px 0;
+    }
+
+    .reading-link + .reading-link {
+      border-top: 1px solid #eee;
+    }
+
+    .reading-link-source {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .reading-link h4 {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .reading-link h4 a {
+      color: var(--purple-700);
+      text-decoration: none;
+    }
+
+    .reading-link h4 a:hover { text-decoration: underline; }
+
+    .reading-link p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .reading-link .type-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 2px 8px;
+      border-radius: 100px;
+      margin-bottom: 6px;
+    }
+
+    .type-badge.article { background: var(--purple-100); color: var(--purple-600); }
+    .type-badge.podcast { background: #fce4ec; color: #c62828; }
+    .type-badge.policy { background: var(--blue-100); color: var(--blue-700); }
+
+    /* FOOTER */
+    .footer {
+      background: var(--purple-900);
+      padding: 30px 40px;
+      text-align: center;
+    }
+
+    .footer-links { margin-bottom: 12px; }
+
+    .footer-links a {
+      color: var(--purple-300);
+      text-decoration: none;
+      font-size: 13px;
+      margin: 0 10px;
+    }
+
+    .footer-links a:hover { color: #fff; }
+
+    .footer p {
+      font-size: 11px;
+      color: var(--purple-400);
+      margin: 0;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 700px) {
+      .newsletter { margin: 0; }
+      .section { padding: 28px 24px; }
+      .header { padding: 30px 24px; }
+      .meme-banner { padding: 22px 24px; }
+      .header-title { font-size: 36px; }
+      .section-title { font-size: 24px; }
+      .audio-formats { grid-template-columns: 1fr; }
+      .info-cards { grid-template-columns: 1fr; }
+      .prompts-grid { grid-template-columns: 1fr; }
+      .footer { padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="newsletter">
+
+  <!-- HEADER -->
+  <header class="header">
+    <img src="unity-college-logo.png" alt="Unity College" class="header-logo" />
+    <h1 class="header-title">Unity Boost</h1>
+    <span class="header-emoji">&#x1F680;&#x1F916;</span>
+    <div class="header-meta">
+      <div>
+        <span class="header-author">Tom Shaun</span><br>
+        <span class="header-role">Teacher of History / Noted AI Enthusiast</span>
+      </div>
+      <span class="header-edition">Edition #5 &mdash; 07/02/26</span>
+    </div>
+  </header>
+
+  <!-- MEME BANNER -->
+  <div class="meme-banner">
+    <img src="terminator.png" alt="Tom as the Terminator" style="max-width:280px; height:auto; border-radius:10px; margin-bottom:14px;" />
+    <div class="meme-text">&ldquo;I need your clothes, your boots, and your NotebookLM login.&rdquo;</div>
+    <div class="meme-attribution">&mdash; The Terminator (2026 reboot, probably)</div>
+  </div>
+
+  <!-- INTRO -->
+  <section class="section">
+    <span class="section-label">Welcome</span>
+    <h2 class="section-title">Hello fellow humans,</h2>
+    <p>
+      Welcome back to Unity Boost edition 5! I hope the new year is treating you well and that you&rsquo;ve managed to shake off the post-Christmas blues (or at least replaced them with half-term countdown energy).
+    </p>
+    <p>
+      This edition, we&rsquo;re diving into the world of <strong>AI Agents</strong> in our Scary Words section (spoiler: they&rsquo;re not quite Terminators&hellip; yet), shining our Tool Spotlight on Google&rsquo;s brilliant <strong>NotebookLM</strong>, and celebrating another strong showing from our students in the Inb4 challenge.
+    </p>
+    <p>
+      We&rsquo;ve also got an exciting announcement about a forthcoming <strong>AI policy</strong> for the college &mdash; watch this space!
+    </p>
+    <p>
+      Let&rsquo;s get boosted!<br>
+      Tom x
+    </p>
+  </section>
+
+  <!-- SCARY WORDS -->
+  <section class="section">
+    <span class="section-label">Jargon Buster</span>
+    <h2 class="section-title">Scary &#x1F628; Words: AI Agents</h2>
+    <p>
+      You&rsquo;ve probably been hearing the word &lsquo;agent&rsquo; thrown around a lot in AI circles lately. It sounds like something from a spy film, but it&rsquo;s actually simpler than you think. So what <em>is</em> an AI agent, and how is it different from the chatbots you&rsquo;ve been using?
+    </p>
+    <p>Here&rsquo;s an easy way to think about it:</p>
+
+    <div class="callout">
+      <p>
+        <strong>A chatbot</strong> is like asking someone for directions. You ask a question, they give you an answer, and that&rsquo;s it. You still have to do the driving yourself.
+      </p>
+      <p style="margin-top: 12px;">
+        <strong>An AI agent</strong> is like hiring a taxi. You tell it where you want to go, and it figures out the route, drives you there, and handles all the turns and traffic along the way. It can <em>take actions</em>, not just give advice.
+      </p>
+    </div>
+
+    <p>
+      In practical terms, while ChatGPT or Copilot will <em>write</em> you a lesson plan if you ask for one, an AI agent could potentially research the topic, find relevant resources, draft the lesson plan, create the PowerPoint, and email it to your department &mdash; all from a single instruction.
+    </p>
+    <p>
+      We&rsquo;re not quite there yet for everyday school use, but this is the direction AI is heading in 2026. Companies like Google, OpenAI, and Anthropic are all racing to build agents that can handle multi-step tasks autonomously.
+    </p>
+    <p>
+      Watch this space &mdash; it&rsquo;s going to change how we interact with these tools very soon.
+    </p>
+  </section>
+
+  <!-- TOOL SPOTLIGHT -->
+  <section class="section">
+    <span class="section-label">&#x1F526; Tool Spotlight</span>
+    <h2 class="section-title">NotebookLM</h2>
+
+    <div class="tool-header">
+      <div class="tool-header-icon">&#x1F4D3;</div>
+      <h3>NotebookLM</h3>
+      <p>by Google</p>
+    </div>
+
+    <p>
+      Google&rsquo;s <strong>NotebookLM</strong> has been quietly becoming one of the most useful AI tools for educators &mdash; and it&rsquo;s completely free.
+    </p>
+    <p>
+      So what is it? NotebookLM is an AI-powered research tool that works <em>exclusively</em> with documents <em>you</em> upload. Unlike ChatGPT or Copilot, it doesn&rsquo;t pull information from the internet &mdash; it only knows what you give it. This means no hallucinations from random web sources (remember Edition 2?), and every answer comes with citations back to your actual documents.
+    </p>
+    <p>
+      You can upload PDFs, Google Docs, Slides, web links, YouTube videos, and more.
+    </p>
+
+    <!-- Audio Overviews -->
+    <h3 class="feature-title">&#x1F399;&#xFE0F; Audio Overviews (The Star of the Show)</h3>
+    <p>
+      This is the feature that made NotebookLM go viral. Upload your documents and, at the click of a button, NotebookLM generates a <strong>podcast-style audio discussion</strong> where two remarkably natural-sounding AI hosts talk through the key points from your material. It takes just a few minutes to generate.
+    </p>
+    <p>
+      Imagine uploading your Year 10 revision notes and two minutes later having a professional-sounding podcast discussing all the key points. Students can download and listen to these on the bus, at home, or while walking the dog.
+    </p>
+
+    <div class="audio-formats">
+      <div class="audio-format">
+        <strong>&#x1F3A7; Deep Dive</strong>
+        <span>Two hosts explore your content in detail</span>
+      </div>
+      <div class="audio-format">
+        <strong>&#x26A1; The Brief</strong>
+        <span>Key takeaways in under two minutes</span>
+      </div>
+      <div class="audio-format">
+        <strong>&#x1F50D; The Critique</strong>
+        <span>Constructive feedback on your material</span>
+      </div>
+      <div class="audio-format">
+        <strong>&#x1F4AC; The Debate</strong>
+        <span>A formal back-and-forth on the topic</span>
+      </div>
+    </div>
+
+    <!-- Slide Decks -->
+    <h3 class="feature-title">&#x1F4CA; Slide Decks &amp; Presentations</h3>
+    <p>
+      NotebookLM can also generate presentation slide decks from your uploaded sources &mdash; a feature I&rsquo;ve been using myself to create more engaging lesson presentations. I&rsquo;ll be demoing this in a tutorial video, so watch this space!
+    </p>
+
+    <div class="tutorial-placeholder">
+      <div class="icon">&#x1F3AC;</div>
+      <p><strong>Tutorial video coming soon!</strong></p>
+      <p style="font-size: 12px; color: #bbb; margin-top: 4px;">[Link will be added here]</p>
+    </div>
+
+    <!-- Safe & Free cards -->
+    <div class="info-cards">
+      <div class="info-card safe">
+        <div class="info-card-icon">&#x1F512;</div>
+        <h4>Is it Safe?</h4>
+        <p>As of April 2025, NotebookLM is a Core Service in Google Workspace for Education. Same data protection as Google Docs and Drive. Your data is not used to train AI models. Just don&rsquo;t upload student personal data &mdash; stick to curriculum content.</p>
+      </div>
+      <div class="info-card free">
+        <div class="info-card-icon">&#x1F4B0;</div>
+        <h4>Is it Free?</h4>
+        <p>Yes! The free tier gives you 100 notebooks, 50 sources per notebook, 50 chat queries and 3 audio overviews per day. More than enough for any teacher.</p>
+      </div>
+    </div>
+
+    <!-- Learn More -->
+    <div class="learn-more-links">
+      <p><strong>Want to learn more?</strong></p>
+      <p>&#x1F4F9; <a href="https://www.edutopia.org/video/ai-tool-demo-generating-podcasts-with-notebooklm/">Edutopia: AI Tool Demo &mdash; Generating Podcasts with NotebookLM</a></p>
+      <p>&#x1F4D6; <a href="https://ditchthattextbook.com/notebooklm/">Ditch That Textbook: NotebookLM for Teachers &mdash; 10 Things to Know</a></p>
+    </div>
+  </section>
+
+  <!-- UNITY NEWS -->
+  <section class="section">
+    <span class="section-label">What's Happening</span>
+    <h2 class="section-title">Unity News &amp; Shout Outs &#x1F60D;</h2>
+
+    <div class="news-card highlight">
+      <h3>&#x1F3C6; Inb4 Program &mdash; Year 7s Shine!</h3>
+      <p>
+        Following on from our Year 11 students&rsquo; victory in the Inb4 AI and digital skills challenge back in October, I took <strong>12 Year 7 students</strong> to take part on Thursday 11th December.
+      </p>
+      <p>
+        They were split into two groups of six and did brilliantly &mdash; our groups came <strong>2nd and 3rd</strong>! Fantastic effort from all involved. Our students continue to impress when it comes to AI and digital skills. Very proud!
+      </p>
+      <div style="display:flex; gap:12px; margin-top:14px;">
+        <img src="inb4-year7-1.jpg" alt="Inb4 Year 7 Group 1 at Lancashire's MEGA challenge" style="width:48%; height:auto; border-radius:8px; object-fit:cover;" />
+        <img src="inb4-year7-2.jpg" alt="Inb4 Year 7 Group 2 at Lancashire's MEGA challenge" style="width:48%; height:auto; border-radius:8px; object-fit:cover;" />
+      </div>
+    </div>
+
+    <div class="news-card teaser">
+      <h3>&#x1F4CB; Coming Soon: Unity AI Policy</h3>
+      <p>
+        We&rsquo;ve been working behind the scenes on an <strong>AI policy</strong> for the college. This will provide clear guidance on safe and effective AI use for both staff and students. Keep your eyes peeled &mdash; more details coming very soon!
+      </p>
+    </div>
+  </section>
+
+  <!-- PROMPTS TO TRY -->
+  <section class="section">
+    <span class="section-label">Try These</span>
+    <h2 class="section-title">Prompts to try... &#x1F4AC;</h2>
+
+    <div class="prompts-grid">
+      <!-- Prompt 1 -->
+      <div class="prompt-card">
+        <div class="prompt-card-body">
+          <p>Create a retrieval practice quiz of 10 questions on [topic] for [age group], mixing multiple choice, short answer, and one challenge question &rArr;</p>
+        </div>
+        <div class="prompt-card-tip">
+          <p><strong>Top Tip:</strong> Add &lsquo;include the answers on a separate page&rsquo; so you can print it as a ready-made quiz</p>
+        </div>
+      </div>
+
+      <!-- Prompt 2 -->
+      <div class="prompt-card">
+        <div class="prompt-card-body">
+          <p>Generate tiered sentence starters for [task type] on [topic] &mdash; one set for students who need more support and one for those ready to be stretched &rArr;</p>
+        </div>
+        <div class="prompt-card-tip">
+          <p><strong>Top Tip:</strong> Ask it to &lsquo;explain the thinking behind each scaffold level&rsquo; so you can adapt them to your class</p>
+        </div>
+      </div>
+
+      <!-- Prompt 3 -->
+      <div class="prompt-card">
+        <div class="prompt-card-body">
+          <p>Design a &lsquo;spot the mistakes&rsquo; activity on [topic] for [age group] with 5&ndash;8 deliberate errors for students to find and correct &rArr;</p>
+        </div>
+        <div class="prompt-card-tip">
+          <p><strong>Top Tip:</strong> Ask it to &lsquo;base the errors on common student misconceptions&rsquo; for maximum impact</p>
+        </div>
+      </div>
+
+      <!-- Prompt 4 -->
+      <div class="prompt-card">
+        <div class="prompt-card-body">
+          <p>Write 3 exit ticket questions for a lesson on [topic] that check whether students have understood [specific learning objective] &rArr;</p>
+        </div>
+        <div class="prompt-card-tip">
+          <p><strong>Top Tip:</strong> Add &lsquo;make one question recall, one application, and one evaluation&rsquo; for a Bloom&rsquo;s-style range</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- USEFUL READING/LISTENING LINKS -->
+  <section class="section">
+    <span class="section-label">Further Reading</span>
+    <h2 class="section-title">Useful reading/listening links</h2>
+
+    <div class="reading-link">
+      <span class="type-badge article">Article</span>
+      <span class="reading-link-source">Third Space Learning</span>
+      <h4><a href="https://thirdspacelearning.com/blog/how-schools-are-using-ai/">How Schools Are Using AI In 2026: 7 Practical Use Cases From School Leaders</a></h4>
+      <p>An AI specialist visited over 20 schools and distilled what she found into seven concrete ways teachers are actually using AI right now &mdash; from marking and lesson planning to one-to-one tutoring at scale. Grounded in real schools, not Silicon Valley hype.</p>
+    </div>
+
+    <div class="reading-link">
+      <span class="type-badge policy">Policy</span>
+      <span class="reading-link-source">UK Government</span>
+      <h4><a href="https://roadmap-for-modern-digital-government.campaign.gov.uk/ai/ai-in-education/">Using AI and Technology in Education to Improve Pupil Outcomes</a></h4>
+      <p>The DfE&rsquo;s strategic roadmap for AI in English schools. Covers safety training for educators, an international AI in Education summit in early 2026, and &pound;45m for digital connectivity. Worth bookmarking &mdash; this is the bigger picture.</p>
+    </div>
+
+    <div class="reading-link">
+      <span class="type-badge article">Opinion</span>
+      <span class="reading-link-source">Education Week</span>
+      <h4><a href="https://www.edweek.org/technology/opinion-im-pro-technology-but-ais-role-in-education-worries-me/2026/01">I&rsquo;m Pro-Technology, But AI&rsquo;s Role in Education Worries Me</a></h4>
+      <p>A parent&rsquo;s perspective on what AI is doing to how secondary-age students learn. Draws on 2025 research on over-dependence and erosion of critical thinking. The kind of piece that sparks a good staffroom discussion.</p>
+    </div>
+
+    <div class="reading-link">
+      <span class="type-badge podcast">Podcast</span>
+      <span class="reading-link-source">AI in Education Podcast</span>
+      <h4><a href="https://aipodcast.education/">Stop Accusing Students: The &lsquo;Silver Nail&rsquo; in the AI Detector Coffin</a></h4>
+      <p>The 2026 season opener tackles AI detection tools and whether teachers should use them to police student work. Their guest makes the case that detectors are unreliable enough to be doing real harm. Especially relevant if you&rsquo;ve ever agonised over whether a piece of student writing &lsquo;feels&rsquo; AI-generated.</p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Unsubscribe</a>
+    </div>
+    <p>&copy; 2026 Unity College. All rights reserved.</p>
+  </footer>
+
+</div>
+
+</body>
+</html>
