@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unity Boost - Edition #6</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --purple-900: #1a0525;
+      --purple-800: #2d0f42;
+      --purple-700: #3d1452;
+      --purple-600: #6b2d7b;
+      --purple-500: #8e44ad;
+      --purple-400: #a569bd;
+      --purple-300: #d4a5e0;
+      --purple-200: #e8d0f0;
+      --purple-100: #f7f0fa;
+      --purple-50: #faf5fd;
+      --warm-white: #fefcff;
+      --text-primary: #1a1a2e;
+      --text-secondary: #4a4a5a;
+      --text-muted: #7a7a8a;
+      --amber-100: #fff3e0;
+      --amber-600: #e65100;
+      --green-100: #e8f5e9;
+      --green-700: #2e7d32;
+      --blue-100: #e3f2fd;
+      --blue-700: #1565c0;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background-color: #f0eaf4;
+      color: var(--text-primary);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .newsletter {
+      max-width: 680px;
+      margin: 0 auto;
+      background-color: var(--warm-white);
+    }
+
+    /* HEADER */
+    .header {
+      background: linear-gradient(160deg, var(--purple-900) 0%, var(--purple-700) 40%, var(--purple-500) 100%);
+      padding: 40px 40px 35px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .header-logo {
+      display: block;
+      max-width: 150px;
+      margin-bottom: 25px;
+      background-color: #fff;
+    }
+
+    .header-title {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 48px;
+      color: #fff;
+      letter-spacing: -0.5px;
+      line-height: 1.1;
+      margin-bottom: 6px;
+    }
+
+    .header-emoji {
+      font-size: 28px;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .header-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .header-author {
+      font-size: 15px;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .header-role {
+      font-size: 13px;
+      color: var(--purple-300);
+    }
+
+    .header-edition {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      padding: 4px 14px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #fff;
+      letter-spacing: 0.5px;
+    }
+
+    /* MEME BANNER */
+    .meme-banner {
+      background: var(--purple-900);
+      padding: 28px 40px;
+      text-align: center;
+      border-bottom: 3px solid var(--purple-600);
+    }
+
+    .meme-emoji { font-size: 36px; margin-bottom: 8px; }
+
+    .meme-text {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 20px;
+      color: var(--purple-200);
+      font-style: italic;
+      line-height: 1.5;
+    }
+
+    .meme-attribution {
+      font-size: 12px;
+      color: var(--purple-400);
+      margin-top: 8px;
+    }
+
+    /* CONTENT SECTIONS */
+    .section {
+      padding: 36px 40px;
+    }
+
+    .section + .section {
+      border-top: 1px solid var(--purple-200);
+    }
+
+    .section-label {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--purple-500);
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 28px;
+      color: var(--purple-700);
+      margin-bottom: 18px;
+      line-height: 1.2;
+    }
+
+    .section-title-sm {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 22px;
+      color: var(--purple-700);
+      margin-bottom: 14px;
+      line-height: 1.3;
+    }
+
+    p { margin-bottom: 14px; font-size: 15px; color: var(--text-secondary); }
+    p:last-child { margin-bottom: 0; }
+
+    strong { color: var(--text-primary); }
+    em { font-style: italic; }
+
+    a { color: var(--purple-600); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; }
+    a:hover { color: var(--purple-500); }
+
+    /* CALLOUT BOX */
+    .callout {
+      background: var(--purple-50);
+      border-left: 4px solid var(--purple-500);
+      border-radius: 0 8px 8px 0;
+      padding: 22px 24px;
+      margin: 18px 0;
+    }
+
+    .callout p { color: var(--purple-700); }
+
+    /* TOKEN GAME */
+    .token-game {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .token-card {
+      background: var(--purple-100);
+      border-radius: 10px;
+      padding: 20px 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+      min-height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .token-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(61, 20, 82, 0.12);
+    }
+
+    .token-card .token-back { display: none; }
+    .token-card.revealed .token-front { display: none; }
+    .token-card.revealed .token-back { display: block; }
+    .token-card.revealed { background: var(--purple-50); }
+
+    .token-word {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 22px;
+      color: var(--purple-700);
+      margin-bottom: 8px;
+      word-break: break-word;
+    }
+
+    .token-prompt {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .token-reveal-btn {
+      display: inline-block;
+      background: var(--purple-500);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 5px 16px;
+      border-radius: 100px;
+      letter-spacing: 0.3px;
+    }
+
+    .token-count {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 20px;
+      color: var(--purple-700);
+      margin-bottom: 10px;
+    }
+
+    .token-breakdown {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 3px;
+      margin-bottom: 10px;
+    }
+
+    .token-chunk {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: 'DM Sans', monospace;
+    }
+
+    .token-chunk.c1 { background: #e8d0f0; color: #3d1452; }
+    .token-chunk.c2 { background: #d4e8fc; color: #1565c0; }
+    .token-chunk.c3 { background: #e8f5e9; color: #2e7d32; }
+    .token-chunk.c4 { background: #fff3e0; color: #e65100; }
+
+    .token-comment {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.4;
+      font-style: italic;
+    }
+
+    /* TOOL SPOTLIGHT */
+    .tool-header {
+      background: linear-gradient(135deg, #1565c0 0%, #42a5f5 50%, #90caf9 100%);
+      border-radius: 12px;
+      padding: 30px;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .tool-header-icon { font-size: 36px; margin-bottom: 6px; }
+    .tool-header h3 { font-family: 'DM Serif Display', Georgia, serif; font-size: 32px; color: #fff; margin: 0; }
+    .tool-header p { font-size: 14px; color: rgba(255,255,255,0.85); margin: 4px 0 0; }
+
+    .feature-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--purple-700);
+      margin-bottom: 10px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin: 16px 0;
+    }
+
+    .feature-item {
+      background: var(--purple-100);
+      border-radius: 8px;
+      padding: 14px 16px;
+    }
+
+    .feature-item strong {
+      display: block;
+      font-size: 13px;
+      color: var(--purple-700);
+      margin-bottom: 2px;
+    }
+
+    .feature-item span {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .info-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin: 18px 0;
+    }
+
+    .info-card {
+      border-radius: 10px;
+      padding: 18px;
+    }
+
+    .info-card.safe { background: var(--green-100); }
+    .info-card.free { background: var(--blue-100); }
+
+    .info-card-icon { font-size: 20px; margin-bottom: 6px; }
+    .info-card h4 { font-size: 14px; margin-bottom: 6px; }
+    .info-card.safe h4 { color: var(--green-700); }
+    .info-card.free h4 { color: var(--blue-700); }
+    .info-card p { font-size: 13px; line-height: 1.5; margin: 0; }
+
+    .steps-list {
+      background: var(--purple-50);
+      border-radius: 10px;
+      padding: 22px 24px;
+      margin: 18px 0;
+    }
+
+    .steps-list ol {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .steps-list li {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+      line-height: 1.6;
+    }
+
+    .steps-list li:last-child { margin-bottom: 0; }
+
+    .learn-more-links { margin-top: 16px; }
+    .learn-more-links p { font-size: 14px; margin-bottom: 6px; }
+
+    /* NEWS CARDS */
+    .news-card {
+      border-radius: 10px;
+      padding: 22px 24px;
+      margin-bottom: 14px;
+    }
+
+    .news-card.highlight { background: var(--purple-100); }
+
+    .news-card.teaser {
+      background: var(--amber-100);
+      border-left: 4px solid #ff9800;
+      border-radius: 0 10px 10px 0;
+    }
+
+    .news-card h3 {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .news-card.highlight h3 { color: var(--purple-700); }
+    .news-card.teaser h3 { color: var(--amber-600); }
+
+    .news-card p { font-size: 14px; margin-bottom: 8px; }
+    .news-card p:last-child { margin-bottom: 0; }
+
+    /* PROMPTS GRID */
+    .prompts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .prompt-card {
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .prompt-card-body {
+      background: var(--purple-700);
+      padding: 18px 16px;
+      min-height: 120px;
+      display: flex;
+      align-items: center;
+    }
+
+    .prompt-card-body p {
+      font-size: 14px;
+      color: #fff;
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    .prompt-card-tip {
+      background: var(--purple-100);
+      padding: 12px 16px;
+    }
+
+    .prompt-card-tip p {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    /* READING LINKS */
+    .reading-link {
+      padding: 16px 0;
+    }
+
+    .reading-link + .reading-link {
+      border-top: 1px solid #eee;
+    }
+
+    .reading-link-source {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .reading-link h4 {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .reading-link h4 a {
+      color: var(--purple-700);
+      text-decoration: none;
+    }
+
+    .reading-link h4 a:hover { text-decoration: underline; }
+
+    .reading-link p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .reading-link .type-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 2px 8px;
+      border-radius: 100px;
+      margin-bottom: 6px;
+    }
+
+    .type-badge.article { background: var(--purple-100); color: var(--purple-600); }
+    .type-badge.report { background: var(--blue-100); color: var(--blue-700); }
+    .type-badge.opinion { background: var(--amber-100); color: var(--amber-600); }
+
+    /* FOOTER */
+    .footer {
+      background: var(--purple-900);
+      padding: 30px 40px;
+      text-align: center;
+    }
+
+    .footer-links { margin-bottom: 12px; }
+
+    .footer-links a {
+      color: var(--purple-300);
+      text-decoration: none;
+      font-size: 13px;
+      margin: 0 10px;
+    }
+
+    .footer-links a:hover { color: #fff; }
+
+    .footer p {
+      font-size: 11px;
+      color: var(--purple-400);
+      margin: 0;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 700px) {
+      .newsletter { margin: 0; }
+      .section { padding: 28px 24px; }
+      .header { padding: 30px 24px; }
+      .meme-banner { padding: 22px 24px; }
+      .header-title { font-size: 36px; }
+      .section-title { font-size: 24px; }
+      .token-game { grid-template-columns: 1fr 1fr; }
+      .feature-grid { grid-template-columns: 1fr; }
+      .info-cards { grid-template-columns: 1fr; }
+      .prompts-grid { grid-template-columns: 1fr; }
+      .footer { padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="newsletter">
+
+  <!-- HEADER -->
+  <header class="header">
+    <img src="unity-college-logo.png" alt="Unity College" class="header-logo" />
+    <h1 class="header-title">Unity Boost</h1>
+    <span class="header-emoji">&#x1F680;&#x1F916;</span>
+    <div class="header-meta">
+      <div>
+        <span class="header-author">Tom Shaun</span><br>
+        <span class="header-role">Teacher of History / Noted AI Enthusiast</span>
+      </div>
+      <span class="header-edition">Edition #6 &mdash; 13/03/26</span>
+    </div>
+  </header>
+
+  <!-- MEME BANNER -->
+  <div class="meme-banner">
+    <img src="tom-bernie.jpg" alt="Tom as Bernie Sanders - I am once again asking you to remember what you copied 30 seconds ago" style="max-width:280px; height:auto; border-radius:10px; margin-bottom:14px;" />
+    <div class="meme-attribution">Scroll down to the Tool Spotlight to end this suffering forever.</div>
+  </div>
+
+  <!-- INTRO -->
+  <section class="section">
+    <span class="section-label">Welcome</span>
+    <h2 class="section-title">Hello fellow humans,</h2>
+    <p>
+      Welcome back to Unity Boost edition 6! We&rsquo;re back on what I&rsquo;m generously calling a &lsquo;fortnightly-ish&rsquo; schedule. Close enough.
+    </p>
+    <p>
+      This edition, we&rsquo;re breaking down <strong>Tokens</strong> in our Scary Words section &mdash; the hidden currency behind every AI conversation &mdash; and our Tool Spotlight takes a slightly different turn. We&rsquo;re looking at <strong>Ditto Clipboard</strong>, a free productivity tool that has nothing to do with AI but <em>everything</em> to do with making your daily life easier. Trust me on this one.
+    </p>
+    <p>
+      We&rsquo;ve also got another Inb4 trip to celebrate with our Year 9s, four more prompts to try, and some excellent reading material &mdash; including a major OECD report that&rsquo;s got the education world talking.
+    </p>
+    <p>
+      Let&rsquo;s get boosted!<br>
+      Tom x
+    </p>
+  </section>
+
+  <!-- SCARY WORDS -->
+  <section class="section">
+    <span class="section-label">Jargon Buster</span>
+    <h2 class="section-title">Scary &#x1F628; Words: Tokens</h2>
+    <p>
+      Every time you use ChatGPT, Copilot, or any AI tool, your conversation is being measured in <strong>tokens</strong>. Think of tokens as the AI&rsquo;s currency &mdash; and every conversation has a budget.
+    </p>
+    <p>
+      But here&rsquo;s the thing: a token isn&rsquo;t exactly a word. It&rsquo;s more like a <em>chunk</em> of a word. Short, common words like &lsquo;the&rsquo;, &lsquo;cat&rsquo;, or &lsquo;hello&rsquo; are usually one token each. But longer or less common words get broken up: &lsquo;unbelievable&rsquo; might become three tokens (&lsquo;un&rsquo;, &lsquo;believ&rsquo;, &lsquo;able&rsquo;), and &lsquo;antidisestablishmentarianism&rsquo; could be seven or eight.
+    </p>
+
+    <div class="callout">
+      <p>
+        <strong>Think of it like a text message on an old phone.</strong> Remember when texts had a character limit and you had to be strategic about what you included? Tokens work the same way. The AI has a maximum budget for reading your input <em>and</em> writing its response &mdash; combined. Use up too much on a massive input, and there&rsquo;s less room left for the answer.
+      </p>
+    </div>
+
+    <p>
+      As a rough guide, <strong>1 token &asymp; &frac34; of a word</strong> in English. So 1,000 tokens is roughly 750 words &mdash; about three pages of double-spaced text.
+    </p>
+    <p>
+      <strong>Why should you care?</strong> This is why:
+    </p>
+    <ul style="margin: 0 0 14px 20px; font-size: 15px; color: var(--text-secondary); line-height: 2;">
+      <li>It&rsquo;s why you <strong>can&rsquo;t paste an entire textbook</strong> into ChatGPT and expect a useful answer</li>
+      <li>It&rsquo;s why <strong>shorter, focused prompts</strong> often get better results &mdash; you&rsquo;re leaving more budget for the reply</li>
+      <li>It&rsquo;s why some AI plans <strong>cost more than others</strong> &mdash; more tokens = more expensive to run</li>
+    </ul>
+    <p>
+      Next time an AI tool tells you your input is too long, you&rsquo;ll know exactly what&rsquo;s happening: you&rsquo;ve hit the token limit. The fix? Break your request into smaller chunks, or trim down what you&rsquo;re pasting in.
+    </p>
+  </section>
+
+  <!-- TOKEN GAME -->
+  <section class="section" style="border-top: 1px solid var(--purple-200);">
+    <span class="section-label">Interactive</span>
+    <h2 class="section-title">Guess the Token Count! &#x1F3AE;</h2>
+    <p>Think you&rsquo;ve got the hang of tokens? Try guessing how many tokens each of these words or phrases breaks into. Click <strong>Reveal</strong> to see the answer &mdash; and how the AI actually chops them up.</p>
+
+    <div class="token-game">
+
+      <div class="token-card" onclick="this.classList.toggle('revealed')">
+        <div class="token-front">
+          <div class="token-word">cat</div>
+          <div class="token-prompt">How many tokens?</div>
+          <div class="token-reveal-btn">Reveal</div>
+        </div>
+        <div class="token-back">
+          <div class="token-count">1 token</div>
+          <div class="token-breakdown">
+            <span class="token-chunk c1">cat</span>
+          </div>
+          <div class="token-comment">Short, common words are usually just one token.</div>
+        </div>
+      </div>
+
+      <div class="token-card" onclick="this.classList.toggle('revealed')">
+        <div class="token-front">
+          <div class="token-word">homework</div>
+          <div class="token-prompt">How many tokens?</div>
+          <div class="token-reveal-btn">Reveal</div>
+        </div>
+        <div class="token-back">
+          <div class="token-count">2 tokens</div>
+          <div class="token-breakdown">
+            <span class="token-chunk c1">hom</span><span class="token-chunk c2">ework</span>
+          </div>
+          <div class="token-comment">Not quite &lsquo;home&rsquo; + &lsquo;work&rsquo; &mdash; AI splits things differently to us!</div>
+        </div>
+      </div>
+
+      <div class="token-card" onclick="this.classList.toggle('revealed')">
+        <div class="token-front">
+          <div class="token-word">Ofsted</div>
+          <div class="token-prompt">How many tokens?</div>
+          <div class="token-reveal-btn">Reveal</div>
+        </div>
+        <div class="token-back">
+          <div class="token-count">2 tokens</div>
+          <div class="token-breakdown">
+            <span class="token-chunk c1">Of</span><span class="token-chunk c2">sted</span>
+          </div>
+          <div class="token-comment">Even the AI doesn&rsquo;t know what to make of Ofsted.</div>
+        </div>
+      </div>
+
+      <div class="token-card" onclick="this.classList.toggle('revealed')">
+        <div class="token-front">
+          <div class="token-word">unbelievable</div>
+          <div class="token-prompt">How many tokens?</div>
+          <div class="token-reveal-btn">Reveal</div>
+        </div>
+        <div class="token-back">
+          <div class="token-count">3 tokens</div>
+          <div class="token-breakdown">
+            <span class="token-chunk c1">un</span><span class="token-chunk c2">belie</span><span class="token-chunk c3">vable</span>
+          </div>
+          <div class="token-comment">Longer words start to break apart &mdash; prefixes and suffixes get their own tokens.</div>
+        </div>
+      </div>
+
+      <div class="token-card" onclick="this.classList.toggle('revealed')">
+        <div class="token-front">
+          <div class="token-word">safeguarding</div>
+          <div class="token-prompt">How many tokens?</div>
+          <div class="token-reveal-btn">Reveal</div>
+        </div>
+        <div class="token-back">
+          <div class="token-count">4 tokens!</div>
+          <div class="token-breakdown">
+            <span class="token-chunk c1">s</span><span class="token-chunk c2">af</span><span class="token-chunk c3">eguard</span><span class="token-chunk c4">ing</span>
+          </div>
+          <div class="token-comment">A word we use every day &mdash; but the AI really struggles with it. That lone &lsquo;s&rsquo;!</div>
+        </div>
+      </div>
+
+      <div class="token-card" onclick="this.classList.toggle('revealed')">
+        <div class="token-front">
+          <div class="token-word" style="font-size:16px;">supercalifragilistic&shy;expialidocious</div>
+          <div class="token-prompt">How many tokens?</div>
+          <div class="token-reveal-btn">Reveal</div>
+        </div>
+        <div class="token-back">
+          <div class="token-count">11 tokens!</div>
+          <div class="token-breakdown">
+            <span class="token-chunk c1">sup</span><span class="token-chunk c2">erc</span><span class="token-chunk c3">al</span><span class="token-chunk c4">if</span><span class="token-chunk c1">rag</span><span class="token-chunk c2">il</span><span class="token-chunk c3">istic</span><span class="token-chunk c4">exp</span><span class="token-chunk c1">ial</span><span class="token-chunk c2">id</span><span class="token-chunk c3">ocious</span>
+          </div>
+          <div class="token-comment">Even though the sound of it is something quite atrocious.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <p style="margin-top: 18px; font-size: 13px; color: var(--text-muted);">
+      Tokenisation based on GPT-4&rsquo;s tokeniser. Other AI models may split words slightly differently, but the principle is the same.
+    </p>
+  </section>
+
+  <!-- TOOL SPOTLIGHT -->
+  <section class="section">
+    <span class="section-label">&#x1F526; Tool Spotlight</span>
+    <h2 class="section-title">Ditto Clipboard</h2>
+
+    <div class="tool-header">
+      <div class="tool-header-icon">&#x1F4CB;</div>
+      <h3>Ditto Clipboard</h3>
+      <p>Free Clipboard Manager for Windows</p>
+    </div>
+
+    <p>
+      &ldquo;Wait, this isn&rsquo;t an AI tool!&rdquo; I hear you cry. You&rsquo;re right. But Unity Boost isn&rsquo;t just about AI &mdash; it&rsquo;s about making your working life easier. And <strong>Ditto</strong> might be the single most useful free tool I&rsquo;ve ever installed on a computer.
+    </p>
+    <p>
+      Here&rsquo;s the problem we all have: you copy something, then you copy something else, and the first thing is gone forever. You end up flicking between windows, copying and pasting one thing at a time, losing things constantly. It&rsquo;s maddening.
+    </p>
+    <p>
+      Ditto fixes this. It sits quietly in your system tray and <strong>saves everything you copy</strong> &mdash; text, images, links, the lot. When you need something back, you just open Ditto and it&rsquo;s all there.
+    </p>
+
+    <div style="margin:24px 0; border-radius:12px; overflow:hidden; aspect-ratio:16/9;">
+      <iframe src="https://drive.google.com/file/d/1ZwZRnY3yLcoqKZUB8c-cy-LM7H8VNDYl/preview" width="100%" height="100%" style="border:none;" allow="autoplay" allowfullscreen></iframe>
+    </div>
+
+    <h3 class="feature-title">&#x2B50; Key Features</h3>
+
+    <div class="feature-grid">
+      <div class="feature-item">
+        <strong>&#x1F4CB; Clipboard History</strong>
+        <span>Automatically saves everything you copy. Need that thing from 3 hours ago? It's still there.</span>
+      </div>
+      <div class="feature-item">
+        <strong>&#x1F50D; Instant Search</strong>
+        <span>Type to search through your entire clipboard history. Find anything in seconds.</span>
+      </div>
+      <div class="feature-item">
+        <strong>&#x1F4CC; Pin Favourites</strong>
+        <span>Pin text you use all the time &mdash; feedback phrases, email sign-offs, URLs you always need.</span>
+      </div>
+      <div class="feature-item">
+        <strong>&#x2328;&#xFE0F; Quick Paste</strong>
+        <span>Press Ctrl+' to open Ditto, double-click any item to paste it. That's it.</span>
+      </div>
+    </div>
+
+    <h3 class="feature-title">&#x1F3AC; Getting Started (2 minutes, genuinely)</h3>
+
+    <div class="steps-list">
+      <ol>
+        <li>Download Ditto from <a href="https://ditto-cp.sourceforge.io/">ditto-cp.sourceforge.io</a> &mdash; it&rsquo;s a tiny install</li>
+        <li>Run it. It sits in your system tray (bottom-right of your screen, near the clock)</li>
+        <li>Copy things as normal &mdash; Ctrl+C as you always do. Ditto remembers them all</li>
+        <li>Press <strong>Ctrl+&rsquo;</strong> to open your clipboard history (the video above shows how to change this to Ctrl+D if you prefer)</li>
+        <li>Double-click any item to paste it. That&rsquo;s it. Life changed.</li>
+      </ol>
+    </div>
+
+    <div class="info-cards">
+      <div class="info-card safe">
+        <div class="info-card-icon">&#x1F512;</div>
+        <h4>Is it Safe?</h4>
+        <p>Yes. Everything is stored locally on your own computer &mdash; nothing is sent to the cloud or shared anywhere. It&rsquo;s open source, so anyone can inspect the code. Don&rsquo;t copy passwords with it, though &mdash; that&rsquo;s just good sense.</p>
+      </div>
+      <div class="info-card free">
+        <div class="info-card-icon">&#x1F4B0;</div>
+        <h4>Is it Free?</h4>
+        <p>Completely free and open source. No ads, no trials, no premium tier. Just a generous developer who made something brilliant and gave it away.</p>
+      </div>
+    </div>
+
+    <div class="learn-more-links">
+      <p><strong>Want to learn more?</strong></p>
+      <p>&#x1F310; <a href="https://ditto-cp.sourceforge.io/">Ditto Clipboard &mdash; Official Website</a></p>
+    </div>
+  </section>
+
+  <!-- UNITY NEWS -->
+  <section class="section">
+    <span class="section-label">What's Happening</span>
+    <h2 class="section-title">Unity News &amp; Shout Outs &#x1F60D;</h2>
+
+    <div class="news-card highlight">
+      <h3>&#x1F3C6; Inb4 Program &mdash; Year 9s Step Up!</h3>
+      <p>
+        The Inb4 AI and digital skills challenge continues to be a brilliant opportunity for our students. This time it was the turn of our <strong>Year 9s</strong> to head out and take part.
+      </p>
+      <p>
+        While neither of our teams took the top spot this time around, the experience was fantastic and our students represented the college brilliantly. That&rsquo;s now three year groups who&rsquo;ve taken part in Inb4 &mdash; Year 11s (winners!), Year 7s (2nd &amp; 3rd), and now Year 9s. The programme keeps growing and so does our students&rsquo; confidence with AI and digital skills.
+      </p>
+      <div style="display:flex; gap:10px; margin-top:14px;">
+        <img src="inb4-year9-1.jpg" alt="Year 9 students at the Inb4 challenge" style="width:49%; height:auto; border-radius:8px; object-fit:cover; cursor:pointer;" onclick="openLightbox(this.src)" />
+        <img src="inb4-year9-2.jpg" alt="Year 9 students at the Inb4 challenge" style="width:49%; height:auto; border-radius:8px; object-fit:cover; cursor:pointer;" onclick="openLightbox(this.src)" />
+      </div>
+      <div style="margin-top:10px; text-align:center;">
+        <img src="inb4-year9-3.jpg" alt="Year 9 students at the Inb4 challenge" style="width:50%; height:auto; border-radius:8px; object-fit:cover; cursor:pointer;" onclick="openLightbox(this.src)" />
+      </div>
+    </div>
+  </section>
+
+  <!-- PROMPTS TO TRY -->
+  <section class="section">
+    <span class="section-label">Try These</span>
+    <h2 class="section-title">Prompts to try... &#x1F4AC;</h2>
+
+    <div class="prompts-grid">
+      <!-- Prompt 1 -->
+      <div class="prompt-card">
+        <div class="prompt-card-body">
+          <p>Create a WAGOLL (What A Good One Looks Like) for [task] at [level/age group], with annotations explaining what makes it effective &rArr;</p>
+        </div>
+        <div class="prompt-card-tip">
+          <p><strong>Top Tip:</strong> Add &lsquo;include a weaker example alongside it&rsquo; so students can compare and spot the differences</p>
+        </div>
+      </div>
+
+      <!-- Prompt 2 -->
+      <div class="prompt-card">
+        <div class="prompt-card-body">
+          <p>Turn the following [text/topic] into a card sort activity for [age group], with clear categories and 12&ndash;16 cards &rArr;</p>
+        </div>
+        <div class="prompt-card-tip">
+          <p><strong>Top Tip:</strong> Ask for &lsquo;a few deliberately tricky cards that could fit in more than one category&rsquo; to spark discussion</p>
+        </div>
+      </div>
+
+      <!-- Prompt 3 -->
+      <div class="prompt-card">
+        <div class="prompt-card-body">
+          <p>Write 5 true/false statements about [topic] for [age group] &mdash; include at least 2 that target common misconceptions &rArr;</p>
+        </div>
+        <div class="prompt-card-tip">
+          <p><strong>Top Tip:</strong> Follow up with &lsquo;now write a brief explanation for each answer&rsquo; to create a self-marking version</p>
+        </div>
+      </div>
+
+      <!-- Prompt 4 -->
+      <div class="prompt-card">
+        <div class="prompt-card-body">
+          <p>Generate a glossary of 10 key terms for [topic] with student-friendly definitions and an example sentence for each &rArr;</p>
+        </div>
+        <div class="prompt-card-tip">
+          <p><strong>Top Tip:</strong> Add &lsquo;format as a table I can paste into a Word document&rsquo; for an instant printable handout</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- USEFUL READING/LISTENING LINKS -->
+  <section class="section">
+    <span class="section-label">Further Reading</span>
+    <h2 class="section-title">Useful reading/listening links</h2>
+
+    <div class="reading-link">
+      <span class="type-badge report">Report</span>
+      <span class="reading-link-source">OECD</span>
+      <h4><a href="https://www.oecd.org/en/publications/oecd-digital-education-outlook-2026_062a7394-en.html">OECD Digital Education Outlook 2026: The &lsquo;AI Learning Paradox&rsquo;</a></h4>
+      <p>The big one. The OECD found that students produce better work <em>with</em> AI, but when AI access is removed (like in exams), the advantage disappears &mdash; or reverses. They call it &lsquo;cognitive offloading&rsquo;: students consume polished solutions instead of doing the thinking. Essential reading for anyone wondering how AI is really affecting learning.</p>
+    </div>
+
+    <div class="reading-link">
+      <span class="type-badge article">Article</span>
+      <span class="reading-link-source">Faculty Focus</span>
+      <h4><a href="https://www.facultyfocus.com/articles/teaching-with-technology-articles/designing-the-2026-classroom-emerging-learning-trends-in-an-ai-powered-education-system/">Designing the 2026 Classroom: Emerging Learning Trends in an AI-Powered Education System</a></h4>
+      <p>AI adoption among teachers has nearly doubled since 2023, with 60%+ now using it regularly. This piece looks at what that actually means in practice &mdash; how classrooms are changing, what&rsquo;s working, and what the emerging trends look like for the year ahead. A good big-picture read.</p>
+    </div>
+
+    <div class="reading-link">
+      <span class="type-badge opinion">Opinion</span>
+      <span class="reading-link-source">Education Week</span>
+      <h4><a href="https://www.edweek.org/technology/opinion-train-teachers-on-ai-its-not-that-simple/2026/02">Train Teachers on AI? It&rsquo;s Not That Simple</a></h4>
+      <p>Teachers are on the front lines of AI adoption but most have had no formal training. This piece argues it&rsquo;s not just about &lsquo;more CPD&rsquo; &mdash; the whole approach needs rethinking. Sound familiar? (It&rsquo;s basically why this newsletter exists.)</p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Unsubscribe</a>
+    </div>
+    <p>&copy; 2026 Unity College. All rights reserved.</p>
+  </footer>
+
+</div>
+
+<!-- Lightbox overlay -->
+<div id="lightbox" onclick="closeLightbox()" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:9999; cursor:pointer; justify-content:center; align-items:center;">
+  <img id="lightbox-img" src="" alt="" style="max-width:90%; max-height:90%; border-radius:8px; box-shadow:0 4px 30px rgba(0,0,0,0.5);" />
+</div>
+<script>
+function openLightbox(src) {
+  var lb = document.getElementById('lightbox');
+  document.getElementById('lightbox-img').src = src;
+  lb.style.display = 'flex';
+}
+function closeLightbox() {
+  document.getElementById('lightbox').style.display = 'none';
+}
+</script>
+
+<script data-goatcounter="https://unity-boost.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
