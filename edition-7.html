@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unity Boost - Edition #7</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --purple-900: #1a0525;
+      --purple-800: #2d0f42;
+      --purple-700: #3d1452;
+      --purple-600: #6b2d7b;
+      --purple-500: #8e44ad;
+      --purple-400: #a569bd;
+      --purple-300: #d4a5e0;
+      --purple-200: #e8d0f0;
+      --purple-100: #f7f0fa;
+      --purple-50: #faf5fd;
+      --warm-white: #fefcff;
+      --text-primary: #1a1a2e;
+      --text-secondary: #4a4a5a;
+      --text-muted: #7a7a8a;
+      --amber-100: #fff3e0;
+      --amber-600: #e65100;
+      --green-100: #e8f5e9;
+      --green-700: #2e7d32;
+      --blue-100: #e3f2fd;
+      --blue-700: #1565c0;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background-color: #f0eaf4;
+      color: var(--text-primary);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .newsletter {
+      max-width: 680px;
+      margin: 0 auto;
+      background-color: var(--warm-white);
+    }
+
+    /* HEADER */
+    .header {
+      background: linear-gradient(160deg, var(--purple-900) 0%, var(--purple-700) 40%, var(--purple-500) 100%);
+      padding: 40px 40px 35px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .header-logo {
+      display: block;
+      max-width: 150px;
+      margin-bottom: 25px;
+      background-color: #fff;
+    }
+
+    .header-title {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 48px;
+      color: #fff;
+      letter-spacing: -0.5px;
+      line-height: 1.1;
+      margin-bottom: 6px;
+    }
+
+    .header-emoji {
+      font-size: 28px;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .header-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .header-author {
+      font-size: 15px;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .header-role {
+      font-size: 13px;
+      color: var(--purple-300);
+    }
+
+    .header-edition {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      padding: 4px 14px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #fff;
+      letter-spacing: 0.5px;
+    }
+
+    /* MEME BANNER */
+    .meme-banner {
+      background: var(--purple-900);
+      padding: 28px 40px;
+      text-align: center;
+      border-bottom: 3px solid var(--purple-600);
+    }
+
+    .meme-emoji { font-size: 36px; margin-bottom: 8px; }
+
+    .meme-text {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 20px;
+      color: var(--purple-200);
+      font-style: italic;
+      line-height: 1.5;
+    }
+
+    .meme-attribution {
+      font-size: 12px;
+      color: var(--purple-400);
+      margin-top: 8px;
+    }
+
+    /* CONTENT SECTIONS */
+    .section {
+      padding: 36px 40px;
+    }
+
+    .section + .section {
+      border-top: 1px solid var(--purple-200);
+    }
+
+    .section-label {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--purple-500);
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 28px;
+      color: var(--purple-700);
+      margin-bottom: 18px;
+      line-height: 1.2;
+    }
+
+    .section-title-sm {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 22px;
+      color: var(--purple-700);
+      margin-bottom: 14px;
+      line-height: 1.3;
+    }
+
+    p { margin-bottom: 14px; font-size: 15px; color: var(--text-secondary); }
+    p:last-child { margin-bottom: 0; }
+
+    strong { color: var(--text-primary); }
+    em { font-style: italic; }
+
+    a { color: var(--purple-600); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; }
+    a:hover { color: var(--purple-500); }
+
+    /* CALLOUT BOX */
+    .callout {
+      background: var(--purple-50);
+      border-left: 4px solid var(--purple-500);
+      border-radius: 0 8px 8px 0;
+      padding: 22px 24px;
+      margin: 18px 0;
+    }
+
+    .callout p { color: var(--purple-700); }
+
+    /* CHAT DEMO (context window interactive) */
+    .chat-demo {
+      background: var(--purple-50);
+      border: 1px solid var(--purple-200);
+      border-radius: 12px;
+      padding: 22px;
+      margin-top: 18px;
+    }
+
+    .chat-msg {
+      display: flex;
+      margin-bottom: 10px;
+      transition: opacity 0.3s;
+    }
+
+    .chat-msg.teacher { justify-content: flex-end; }
+
+    .chat-bubble {
+      max-width: 78%;
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .chat-msg.teacher .chat-bubble {
+      background: var(--purple-700);
+      color: #fff;
+      border-bottom-right-radius: 4px;
+    }
+
+    .chat-msg.ai .chat-bubble {
+      background: #fff;
+      color: var(--text-secondary);
+      border: 1px solid var(--purple-200);
+      border-bottom-left-radius: 4px;
+    }
+
+    .chat-msg.hidden { display: none; }
+
+    .chat-msg.forgotten {
+      opacity: 0.3;
+      filter: grayscale(1);
+    }
+
+    .chat-divider {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--purple-500);
+      margin: 14px 0;
+      white-space: nowrap;
+    }
+
+    .chat-divider::before,
+    .chat-divider::after {
+      content: '';
+      flex: 1;
+      border-top: 2px dashed var(--purple-300);
+    }
+
+    .chat-divider.hidden { display: none; }
+
+    .chat-controls {
+      margin-top: 18px;
+    }
+
+    .chat-controls label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--purple-700);
+      margin-bottom: 6px;
+    }
+
+    .chat-controls input[type="range"] {
+      width: 100%;
+      accent-color: var(--purple-500);
+      cursor: pointer;
+    }
+
+    .chat-status {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-style: italic;
+      margin-top: 12px;
+      text-align: center;
+      min-height: 20px;
+    }
+
+    /* TOOL SPOTLIGHT */
+    .tool-header {
+      background: linear-gradient(135deg, #e65100 0%, #ff9800 55%, #ffc107 100%);
+      border-radius: 12px;
+      padding: 30px;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .tool-header-icon { font-size: 36px; margin-bottom: 6px; }
+    .tool-header h3 { font-family: 'DM Serif Display', Georgia, serif; font-size: 32px; color: #fff; margin: 0; }
+    .tool-header p { font-size: 14px; color: rgba(255,255,255,0.9); margin: 4px 0 0; }
+
+    .feature-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--purple-700);
+      margin-bottom: 10px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin: 16px 0;
+    }
+
+    .feature-item {
+      background: var(--purple-100);
+      border-radius: 8px;
+      padding: 14px 16px;
+    }
+
+    .feature-item strong {
+      display: block;
+      font-size: 13px;
+      color: var(--purple-700);
+      margin-bottom: 2px;
+    }
+
+    .feature-item span {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .info-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin: 18px 0;
+    }
+
+    .info-card {
+      border-radius: 10px;
+      padding: 18px;
+    }
+
+    .info-card.safe { background: var(--green-100); }
+    .info-card.free { background: var(--blue-100); }
+
+    .info-card-icon { font-size: 20px; margin-bottom: 6px; }
+    .info-card h4 { font-size: 14px; margin-bottom: 6px; }
+    .info-card.safe h4 { color: var(--green-700); }
+    .info-card.free h4 { color: var(--blue-700); }
+    .info-card p { font-size: 13px; line-height: 1.5; margin: 0; }
+
+    .steps-list {
+      background: var(--purple-50);
+      border-radius: 10px;
+      padding: 22px 24px;
+      margin: 18px 0;
+    }
+
+    .steps-list ol {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .steps-list ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .steps-list li {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+      line-height: 1.6;
+    }
+
+    .steps-list li:last-child { margin-bottom: 0; }
+
+    .learn-more-links { margin-top: 16px; }
+    .learn-more-links p { font-size: 14px; margin-bottom: 6px; }
+
+    /* NEWS CARDS */
+    .news-card {
+      border-radius: 10px;
+      padding: 22px 24px;
+      margin-bottom: 14px;
+    }
+
+    .news-card.highlight { background: var(--purple-100); }
+
+    .news-card.teaser {
+      background: var(--amber-100);
+      border-left: 4px solid #ff9800;
+      border-radius: 0 10px 10px 0;
+    }
+
+    .news-card h3 {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .news-card.highlight h3 { color: var(--purple-700); }
+    .news-card.teaser h3 { color: var(--amber-600); }
+
+    .news-card p { font-size: 14px; margin-bottom: 8px; }
+    .news-card p:last-child { margin-bottom: 0; }
+
+    .year-review-list {
+      list-style: none;
+      margin-top: 12px;
+    }
+
+    .year-review-list li {
+      font-size: 14px;
+      color: var(--text-secondary);
+      padding: 8px 0 8px 2px;
+      line-height: 1.6;
+    }
+
+    .year-review-list li + li {
+      border-top: 1px dashed var(--purple-300);
+    }
+
+    /* PROMPTS GRID */
+    .prompts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .prompt-card {
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .prompt-card-body {
+      background: var(--purple-700);
+      padding: 18px 16px;
+      min-height: 120px;
+      display: flex;
+      align-items: center;
+    }
+
+    .prompt-card-body p {
+      font-size: 14px;
+      color: #fff;
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    .prompt-card-tip {
+      background: var(--purple-100);
+      padding: 12px 16px;
+    }
+
+    .prompt-card-tip p {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    /* READING LINKS */
+    .reading-link {
+      padding: 16px 0;
+    }
+
+    .reading-link + .reading-link {
+      border-top: 1px solid #eee;
+    }
+
+    .reading-link-source {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .reading-link h4 {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .reading-link h4 a {
+      color: var(--purple-700);
+      text-decoration: none;
+    }
+
+    .reading-link h4 a:hover { text-decoration: underline; }
+
+    .reading-link p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .reading-link .type-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 2px 8px;
+      border-radius: 100px;
+      margin-bottom: 6px;
+    }
+
+    .type-badge.article { background: var(--purple-100); color: var(--purple-600); }
+    .type-badge.report { background: var(--blue-100); color: var(--blue-700); }
+    .type-badge.opinion { background: var(--amber-100); color: var(--amber-600); }
+
+    /* FOOTER */
+    .footer {
+      background: var(--purple-900);
+      padding: 30px 40px;
+      text-align: center;
+    }
+
+    .footer-links { margin-bottom: 12px; }
+
+    .footer-links a {
+      color: var(--purple-300);
+      text-decoration: none;
+      font-size: 13px;
+      margin: 0 10px;
+    }
+
+    .footer-links a:hover { color: #fff; }
+
+    .footer p {
+      font-size: 11px;
+      color: var(--purple-400);
+      margin: 0;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 700px) {
+      .newsletter { margin: 0; }
+      .section { padding: 28px 24px; }
+      .header { padding: 30px 24px; }
+      .meme-banner { padding: 22px 24px; }
+      .header-title { font-size: 36px; }
+      .section-title { font-size: 24px; }
+      .feature-grid { grid-template-columns: 1fr; }
+      .info-cards { grid-template-columns: 1fr; }
+      .prompts-grid { grid-template-columns: 1fr; }
+      .chat-bubble { max-width: 88%; }
+      .footer { padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="newsletter">
+
+  <!-- HEADER -->
+  <header class="header">
+    <img src="unity-college-logo.png" alt="Unity College" class="header-logo" />
+    <h1 class="header-title">Unity Boost</h1>
+    <span class="header-emoji">&#x1F680;&#x1F916;</span>
+    <div class="header-meta">
+      <div>
+        <span class="header-author">Tom Shaun</span><br>
+        <span class="header-role">Teacher of History / Noted AI Enthusiast</span>
+      </div>
+      <span class="header-edition">Edition #7 &mdash; 14/07/26</span>
+    </div>
+  </header>
+
+  <!-- MEME BANNER -->
+  <div class="meme-banner">
+    <img src="tom-bernie-summer.jpg" alt="Tom as Bernie Sanders in mittens and a winter coat, once again asking" style="max-width:280px; height:auto; border-radius:10px; margin-bottom:14px;" />
+    <div class="meme-text">&ldquo;&hellip;to remember what I said 15 prompts ago.&rdquo;</div>
+    <div class="meme-attribution">Me, to ChatGPT, at 4pm on a Sunday. Why does it forget? Scroll down to Scary Words. (And yes, this image is AI-made &mdash; see the Tool Spotlight.)</div>
+  </div>
+
+  <!-- INTRO -->
+  <section class="section">
+    <span class="section-label">Welcome</span>
+    <h2 class="section-title">Hello fellow humans,</h2>
+    <p>
+      Welcome to Unity Boost edition 7 &mdash; the <strong>last one of the school year</strong>! At this point I think we can all agree &lsquo;fortnightly&rsquo; was less of a schedule and more of an aspiration. Let&rsquo;s rebrand to &lsquo;termly, with vibes&rsquo; and never speak of it again.
+    </p>
+    <p>
+      This edition, Scary Words tackles the <strong>Context Window</strong> &mdash; the reason AI chatbots forget what you told them twenty minutes ago (complete with an interactive demo where you can watch one forget in real time). The Tool Spotlight finally answers the question I get asked most in the corridor: <em>&ldquo;how do you make those ridiculous pictures of yourself?&rdquo;</em> Say hello to <strong>Nano Banana</strong>. Yes, that&rsquo;s its real name.
+    </p>
+    <p>
+      We&rsquo;ve also got a look back at a genuinely brilliant year of AI at Unity, four fresh prompts (including two designed to make September Future You extremely grateful to July Current You), and some proper summer reading.
+    </p>
+    <p>
+      One last time for 25/26: let&rsquo;s get boosted!<br>
+      Tom x
+    </p>
+  </section>
+
+  <!-- SCARY WORDS -->
+  <section class="section">
+    <span class="section-label">Jargon Buster</span>
+    <h2 class="section-title">Scary &#x1F628; Words: The Context Window</h2>
+    <p>
+      Last edition we learned that AI measures everything in <strong>tokens</strong> &mdash; little chunks of words. The <strong>context window</strong> is the follow-up question: <em>how many tokens can the AI hold in its head at once?</em>
+    </p>
+    <p>
+      Because here&rsquo;s the secret: AI chatbots don&rsquo;t actually have a memory. Every single time you send a message, the AI re-reads the <em>entire conversation so far</em> and writes the next reply. The context window is the maximum amount of conversation it can re-read &mdash; and once your chat gets longer than that, the oldest bits simply fall off the end.
+    </p>
+
+    <div class="callout">
+      <p>
+        <strong>Think of it as a whiteboard of a fixed size.</strong> Everything you and the AI say gets written on the board, and the AI can only &lsquo;know&rsquo; what&rsquo;s currently on it. When the board fills up, the oldest writing gets wiped to make room for new stuff. It&rsquo;s not being rude when it forgets your seating plan &mdash; someone rubbed it off the board.
+      </p>
+    </div>
+
+    <p>
+      <strong>Why should you care?</strong> Because this explains some genuinely baffling AI behaviour:
+    </p>
+    <ul style="margin: 0 0 14px 20px; font-size: 15px; color: var(--text-secondary); line-height: 2;">
+      <li>It&rsquo;s why long chats <strong>drift</strong> &mdash; the AI slowly forgets instructions you gave at the start</li>
+      <li>It&rsquo;s why the fix for a confused chatbot is usually <strong>starting a fresh chat</strong>, not arguing with it</li>
+      <li>It&rsquo;s why you should <strong>re-paste the important stuff</strong> (the year group, the topic, the format) when a conversation gets long</li>
+    </ul>
+    <p>
+      Modern context windows are huge &mdash; some can hold several novels&rsquo; worth of text &mdash; but they are always finite. And remember from last edition: more tokens = more expensive to run. That&rsquo;s why the biggest windows live behind the priciest subscriptions.
+    </p>
+  </section>
+
+  <!-- CONTEXT WINDOW DEMO -->
+  <section class="section" style="border-top: 1px solid var(--purple-200);">
+    <span class="section-label">Interactive</span>
+    <h2 class="section-title">Watch the AI Forget &#x1F41F;</h2>
+    <p>
+      Here&rsquo;s a (lightly dramatised) chat between a history teacher and an AI. This particular AI has a tiny context window: it can only see the <strong>last 4 messages</strong>. Drag the slider to continue the conversation and watch the older messages fall out of its memory&hellip;
+    </p>
+
+    <div class="chat-demo">
+      <div id="chat-messages">
+        <div class="chat-msg teacher" data-i="1"><div class="chat-bubble">Plan me a Year 8 lesson on the Battle of Hastings.</div></div>
+        <div class="chat-msg ai" data-i="2"><div class="chat-bubble">Here you go &mdash; a starter, a source analysis task and a plenary. &#x2694;&#xFE0F;</div></div>
+        <div class="chat-msg teacher" data-i="3"><div class="chat-bubble">Make the starter a retrieval quiz.</div></div>
+        <div class="chat-msg ai" data-i="4"><div class="chat-bubble">Done &mdash; five quick-fire questions on 1066.</div></div>
+        <div class="chat-msg teacher" data-i="5"><div class="chat-bubble">Now add a card sort on the causes.</div></div>
+        <div class="chat-msg ai" data-i="6"><div class="chat-bubble">Added &mdash; 12 cards across three categories.</div></div>
+        <div class="chat-msg teacher" data-i="7"><div class="chat-bubble">Brilliant. Turn the whole lesson into a worksheet.</div></div>
+        <div class="chat-msg ai" data-i="8"><div class="chat-bubble">Of course! Quick question &mdash; which battle is this for, and what year group? &#x1F605;</div></div>
+      </div>
+
+      <div class="chat-controls">
+        <label for="chat-slider">Drag to continue the conversation &#x1F447;</label>
+        <input type="range" id="chat-slider" min="4" max="8" step="1" value="4" />
+      </div>
+      <p class="chat-status" id="chat-status"></p>
+    </div>
+
+    <p style="margin-top: 18px; font-size: 13px; color: var(--text-muted);">
+      Real context windows hold thousands of messages, not four &mdash; but the mechanism is exactly the same. The moment something leaves the window, the AI doesn&rsquo;t just forget it. It has no idea it ever knew it.
+    </p>
+  </section>
+
+  <!-- TOOL SPOTLIGHT -->
+  <section class="section">
+    <span class="section-label">&#x1F526; Tool Spotlight</span>
+    <h2 class="section-title">Nano Banana (Gemini Image Generation)</h2>
+
+    <div class="tool-header">
+      <div class="tool-header-icon">&#x1F34C;</div>
+      <h3>Nano Banana</h3>
+      <p>Google&rsquo;s image AI with the silly name and the serious results</p>
+    </div>
+
+    <p>
+      Terminator Tom. Indiana Jones Tom. And now, above, Bernie Sanders Tom. People keep asking how those get made, and the answer is always the same tool: <strong>Nano Banana</strong>, the image generator built into Google Gemini. (Google&rsquo;s codename for it leaked, everyone loved it, and they just&hellip; kept it.)
+    </p>
+    <p>
+      You type a description &mdash; or upload a photo and describe a change &mdash; and it produces a genuinely impressive image in seconds. No design skills, no Photoshop, no idea what a &lsquo;layer mask&rsquo; is. It&rsquo;s the closest thing to a magic wand I&rsquo;ve featured in this newsletter, and it&rsquo;s the most fun you&rsquo;ll have with AI all summer.
+    </p>
+
+    <h3 class="feature-title">&#x2B50; Why It&rsquo;s Different</h3>
+
+    <div class="feature-grid">
+      <div class="feature-item">
+        <strong>&#x1F3A8; Description to Image in Seconds</strong>
+        <span>&lsquo;A medieval market scene, bustling, watercolour style&rsquo; &mdash; done before your coffee cools.</span>
+      </div>
+      <div class="feature-item">
+        <strong>&#x270F;&#xFE0F; Edits Real Photos</strong>
+        <span>Upload a picture and ask for changes &mdash; new background, new outfit, new historical era (see: every meme in this newsletter).</span>
+      </div>
+      <div class="feature-item">
+        <strong>&#x1F524; It Can Actually Spell</strong>
+        <span>Most image AIs mangle text into alien hieroglyphics. Nano Banana renders real, readable words &mdash; posters and labelled images are finally possible.</span>
+      </div>
+      <div class="feature-item">
+        <strong>&#x1F9CD; Consistent Characters</strong>
+        <span>The same person or character stays recognisable across multiple images &mdash; great for storyboards and picture sequences.</span>
+      </div>
+    </div>
+
+    <h3 class="feature-title">&#x1F3EB; Classroom-Adjacent Ideas</h3>
+
+    <div class="steps-list">
+      <ul>
+        <li><strong>Display &amp; poster art</strong> &mdash; classroom rules, key words, reading corners &mdash; with text that&rsquo;s actually spelled correctly</li>
+        <li><strong>Scene-setting images</strong> &mdash; a Victorian street, a rainforest canopy, a Shakespearean stage &mdash; as discussion or writing stimuli</li>
+        <li><strong>Visual writing prompts</strong> &mdash; generate a mysterious image and let students build the story around it</li>
+        <li><strong>&lsquo;Spot the mistake&rsquo; starters</strong> &mdash; ask for a historical scene <em>with deliberate anachronisms</em> and have students find them. (A knight checking his phone. A Tudor kitchen with a microwave.) Bonus: it teaches them AI images can&rsquo;t be blindly trusted &mdash; a lesson worth ten assemblies.</li>
+      </ul>
+    </div>
+
+    <div class="callout">
+      <p>
+        <strong>The important bit:</strong> our AI Policy lands in September, so for now this is a <em>staff playground, not a student tool</em>. Two hard rules in the meantime: <strong>never upload photos of students</strong> (or anyone who hasn&rsquo;t said yes &mdash; my face is used with my full, enthusiastic consent), and double-check any generated image for accuracy before it goes near a lesson &mdash; AI images are confidently wrong in all sorts of subtle ways.
+      </p>
+    </div>
+
+    <h3 class="feature-title">&#x1F680; Getting Started</h3>
+
+    <div class="steps-list">
+      <ol>
+        <li>Go to <a href="https://gemini.google.com/">gemini.google.com</a> and sign in with your Google account</li>
+        <li>Type <strong>&ldquo;Create an image of&hellip;&rdquo;</strong> and describe what you want &mdash; the more detail, the better</li>
+        <li>Not quite right? Just reply: &lsquo;make it brighter&rsquo;, &lsquo;set it at night&rsquo;, &lsquo;add a border&rsquo; &mdash; it remembers what it made (context window permitting &#x1F609;)</li>
+        <li>Or upload a photo of <em>yourself</em> and try &ldquo;turn me into a Renaissance oil painting&rdquo; &mdash; this is the gateway meme</li>
+        <li>Click the image to download it, then use it anywhere you like</li>
+      </ol>
+    </div>
+
+    <div class="info-cards">
+      <div class="info-card safe">
+        <div class="info-card-icon">&#x1F512;</div>
+        <h4>Is it Safe?</h4>
+        <p>For your own creations, yes. Never upload student photos or personal data, only edit photos of people who&rsquo;ve consented, and treat generated images like any AI output: check before you trust. Nothing student-facing until the AI Policy arrives.</p>
+      </div>
+      <div class="info-card free">
+        <div class="info-card-icon">&#x1F4B0;</div>
+        <h4>Is it Free?</h4>
+        <p>Yes, to try &mdash; free Gemini accounts get a small daily allowance of image generations, which is plenty for experimenting. Heavier use (and the top-tier &lsquo;Pro&rsquo; model with sharper text and higher resolution) needs a Google AI subscription.</p>
+      </div>
+    </div>
+
+    <div class="learn-more-links">
+      <p><strong>Want to see it in action?</strong></p>
+      <p>&#x1F310; <a href="https://gemini.google.com/">Gemini &mdash; Homepage</a></p>
+      <p>&#x1F3A9; <a href="edition-6.html">Exhibit A: Indiana Jones Tom (Edition 6)</a></p>
+      <p>&#x1F916; <a href="edition-5.html">Exhibit B: Terminator Tom (Edition 5)</a></p>
+    </div>
+  </section>
+
+  <!-- UNITY NEWS -->
+  <section class="section">
+    <span class="section-label">What's Happening</span>
+    <h2 class="section-title">Unity News &amp; Shout Outs &#x1F60D;</h2>
+
+    <div class="news-card highlight">
+      <h3>&#x1F393; That&rsquo;s a Wrap on 25/26!</h3>
+      <p>
+        Before we all sprint for the gates, it&rsquo;s worth pausing on what a year it&rsquo;s been for AI at Unity:
+      </p>
+      <ul class="year-review-list">
+        <li>&#x1F3C6; <strong>The Inb4 hat-trick:</strong> three year groups took on the Inb4 AI challenge this year &mdash; our Year 11s <strong>won the whole thing</strong> in the autumn, the Year 7s grabbed <strong>2nd and 3rd</strong> at Lancashire&rsquo;s MEGA in December, and our Year 9s flew the flag brilliantly in March. Whoever&rsquo;s up next season has a legacy to defend.</li>
+        <li>&#x1F468;&#x200D;&#x1F3EB; <strong>Staff leading the way:</strong> from AI-designed Drama sets to ChatGPT-assisted English analysis, Gamma-built Science resources and the library&rsquo;s Canva poster glow-up &mdash; colleagues across the college quietly got on with using AI well. You&rsquo;re the reason this newsletter exists.</li>
+        <li>&#x1F4EC; <strong>Unity Boost went digital:</strong> the newsletter moved from PDFs to a proper website this year. All seven editions live at <a href="https://unity-college-burnley.github.io/unity-boost/">the archive</a> if you fancy some light beach reading.</li>
+      </ul>
+    </div>
+
+    <div class="news-card teaser">
+      <h3>&#x1F4DC; Coming in September: The AI Policy (For Real This Time)</h3>
+      <p>
+        The long-promised Unity College AI Policy is in its final stages and lands next term. The first Unity Boost of the new year will break down exactly what it means for you and your classroom &mdash; no legalese, promise.
+      </p>
+      <p>
+        <strong>And a summer homework challenge (optional, unmarked, no deadline anxiety):</strong> try <em>one</em> AI thing over the break &mdash; a Nano Banana image, a Deep Research report, a NotebookLM podcast &mdash; and tell me about it in September. Best ones get a shout out in Edition 8. &#x1F31E;
+      </p>
+    </div>
+  </section>
+
+  <!-- PROMPTS TO TRY -->
+  <section class="section">
+    <span class="section-label">Try These</span>
+    <h2 class="section-title">Prompts to try... &#x1F4AC;</h2>
+
+    <div class="prompts-grid">
+      <!-- Prompt 1 -->
+      <div class="prompt-card">
+        <div class="prompt-card-body">
+          <p>Write a hinge question for [topic] with 4 answer options, where each wrong answer reveals a different specific misconception &mdash; and explain what each wrong answer tells me &rArr;</p>
+        </div>
+        <div class="prompt-card-tip">
+          <p><strong>Top Tip:</strong> Follow up with &lsquo;now give me a 2-minute re-teach for the most likely wrong answer&rsquo; and your mid-lesson pivot is ready before the lesson starts</p>
+        </div>
+      </div>
+
+      <!-- Prompt 2 -->
+      <div class="prompt-card">
+        <div class="prompt-card-body">
+          <p>Rewrite this passage at three reading ages [e.g. 9, 12, 15], keeping the key subject terminology in all three versions: [paste text] &rArr;</p>
+        </div>
+        <div class="prompt-card-tip">
+          <p><strong>Top Tip:</strong> Add &lsquo;gloss the technical terms in brackets for the simplest version&rsquo; so weaker readers keep the vocabulary instead of losing it</p>
+        </div>
+      </div>
+
+      <!-- Prompt 3 -->
+      <div class="prompt-card">
+        <div class="prompt-card-body">
+          <p>Act as a critical friend. Here&rsquo;s my unit outline for [topic]: [paste]. Identify gaps, weak sequencing, and missed retrieval opportunities &rArr;</p>
+        </div>
+        <div class="prompt-card-tip">
+          <p><strong>Top Tip:</strong> Ask for &lsquo;three quick wins and one big change&rsquo; &mdash; it stops the feedback being an overwhelming wall of suggestions</p>
+        </div>
+      </div>
+
+      <!-- Prompt 4 -->
+      <div class="prompt-card">
+        <div class="prompt-card-body">
+          <p>Design a first-lesson-back activity for [subject/year group] that surfaces what students remember from last year &mdash; low-stakes, no marking, ready in 10 minutes &rArr;</p>
+        </div>
+        <div class="prompt-card-tip">
+          <p><strong>Top Tip:</strong> Add &lsquo;include a follow-up plan for the gaps it&rsquo;s most likely to reveal&rsquo; &mdash; September You will be insufferably smug about this</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- USEFUL READING/LISTENING LINKS -->
+  <section class="section">
+    <span class="section-label">Further Reading</span>
+    <h2 class="section-title">Summer reading/listening links &#x1F3D6;&#xFE0F;</h2>
+
+    <div class="reading-link">
+      <span class="type-badge report">Report</span>
+      <span class="reading-link-source">Ofsted / GOV.UK</span>
+      <h4><a href="https://www.gov.uk/government/publications/ai-in-schools-and-further-education-findings-from-early-adopters/the-biggest-risk-is-doing-nothing-insights-from-early-adopters-of-artificial-intelligence-in-schools-and-further-education-colleges">&lsquo;The Biggest Risk Is Doing Nothing&rsquo;: Insights from Early Adopters of AI in Schools</a></h4>
+      <p>Ofsted visited 21 schools and colleges already embedding AI and wrote up what works: the big wins are in workload (planning, resources, admin), the schools doing it well all took safeguarding and data protection seriously first, and nearly every one of them had an &lsquo;AI champion&rsquo; &mdash; a tech-confident teacher who demystifies it for everyone else. No idea what that would look like here. None at all.</p>
+    </div>
+
+    <div class="reading-link">
+      <span class="type-badge article">Article</span>
+      <span class="reading-link-source">UK Parliament</span>
+      <h4><a href="https://committees.parliament.uk/committee/203/education-committee/news/212112/ai-and-edtech-mps-launch-new-inquiry-examining-technologys-role-in-education/">AI and EdTech: MPs Launch Inquiry Into Technology&rsquo;s Role in Education</a></h4>
+      <p>The Education Select Committee is formally investigating AI across the whole education system &mdash; how it affects critical thinking, whether it deepens inequality between students, what it means for assessment, and whether teachers are actually getting the support they need. In other words: Westminster is now asking the exact questions our staff room has been asking all year. Results expected to shape national policy.</p>
+    </div>
+
+    <div class="reading-link">
+      <span class="type-badge opinion">Opinion</span>
+      <span class="reading-link-source">Ethan Mollick</span>
+      <h4><a href="https://www.oneusefulthing.org/p/the-twilight-of-the-chatbots">The Twilight of the Chatbots</a></h4>
+      <p>Remember &lsquo;AI Agents&rsquo; from Edition 5? Mollick (Wharton professor, best AI writer around) argues that era has properly arrived: we&rsquo;re shifting from chatting with AI to delegating whole tasks to it. His most teacher-relevant point: the people who get the most out of AI agents are the ones with real subject expertise &mdash; because you can only supervise work you understand. Good news for people whose entire job is expertise, i.e. you.</p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Unsubscribe</a>
+    </div>
+    <p>&copy; 2026 Unity College. All rights reserved.</p>
+  </footer>
+
+</div>
+
+<script>
+(function () {
+  var slider = document.getElementById('chat-slider');
+  var status = document.getElementById('chat-status');
+  var container = document.getElementById('chat-messages');
+  var messages = container.querySelectorAll('.chat-msg');
+  var WINDOW_SIZE = 4;
+
+  var divider = document.createElement('div');
+  divider.className = 'chat-divider';
+  divider.innerHTML = '&#x1F9E0; The AI&rsquo;s memory starts here';
+
+  function update() {
+    var n = parseInt(slider.value, 10);
+    var forgottenCount = Math.max(0, n - WINDOW_SIZE);
+
+    messages.forEach(function (msg) {
+      var i = parseInt(msg.getAttribute('data-i'), 10);
+      msg.classList.toggle('hidden', i > n);
+      msg.classList.toggle('forgotten', i <= forgottenCount);
+    });
+
+    if (forgottenCount > 0) {
+      var firstRemembered = container.querySelector('.chat-msg[data-i="' + (forgottenCount + 1) + '"]');
+      container.insertBefore(divider, firstRemembered);
+      divider.classList.remove('hidden');
+    } else if (divider.parentNode) {
+      divider.classList.add('hidden');
+    }
+
+    if (n === 4) {
+      status.innerHTML = 'All 4 messages fit in the window &mdash; the AI remembers everything. So far, so good. &#x1F60C;';
+    } else if (n < 8) {
+      status.innerHTML = 'The oldest ' + (forgottenCount === 1 ? 'message has' : forgottenCount + ' messages have') + ' fallen out of the window. The AI can no longer see ' + (forgottenCount === 1 ? 'it' : 'them') + '&hellip;';
+    } else {
+      status.innerHTML = '&lsquo;Year 8&rsquo; and &lsquo;Battle of Hastings&rsquo; left the window ages ago &mdash; and the AI has no idea it ever knew them. &#x1F41F;';
+    }
+  }
+
+  slider.addEventListener('input', update);
+  update();
+})();
+</script>
+
+<script data-goatcounter="https://unity-boost.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
