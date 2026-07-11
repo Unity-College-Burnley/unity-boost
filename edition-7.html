@@ -238,6 +238,7 @@
     }
 
     .context-meter-fill.warn { background: #ff9800; }
+    .context-meter-fill.over { background: #e65100; }
 
     .chat-stage {
       position: relative;
@@ -252,9 +253,11 @@
       background: rgba(142, 68, 173, 0.05);
       border-radius: 12px;
       pointer-events: none;
-      transition: top 0.4s ease, height 0.4s ease;
+      transition: top 0.5s ease, height 0.5s ease;
       z-index: 1;
     }
+
+    .context-frame.hidden { display: none; }
 
     .context-frame-label {
       position: absolute;
@@ -310,7 +313,11 @@
       font-weight: 600;
       padding: 1px 8px;
       border-radius: 100px;
+      opacity: 0;
+      transition: opacity 0.3s;
     }
+
+    .chat-msg.counted .tok { opacity: 1; }
 
     .chat-msg.teacher .tok {
       background: rgba(255, 255, 255, 0.18);
@@ -324,33 +331,54 @@
 
     .chat-msg.hidden { display: none; }
 
-    .chat-msg.forgotten {
-      opacity: 0.3;
-      filter: grayscale(1);
+    .chat-stub {
+      display: none;
+      width: 100%;
+      text-align: center;
+      font-size: 11.5px;
+      font-style: italic;
+      color: var(--text-muted);
+      padding: 2px 0;
+    }
+
+    .chat-msg.forgotten .chat-bubble { display: none; }
+
+    .chat-msg.forgotten .chat-stub {
+      display: block;
+      animation: stubIn 0.45s ease;
+    }
+
+    @keyframes stubIn {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .typing-dots {
+      display: inline-flex;
+      gap: 4px;
+      padding: 5px 2px;
+      vertical-align: middle;
+    }
+
+    .typing-dots span {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--purple-400);
+      animation: tdot 1s infinite;
+    }
+
+    .typing-dots span:nth-child(2) { animation-delay: 0.15s; }
+    .typing-dots span:nth-child(3) { animation-delay: 0.3s; }
+
+    @keyframes tdot {
+      0%, 60%, 100% { opacity: 0.3; transform: translateY(0); }
+      30% { opacity: 1; transform: translateY(-3px); }
     }
 
     .chat-controls {
       margin-top: 18px;
-    }
-
-    .chat-controls label {
-      display: block;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--purple-700);
-      margin-bottom: 6px;
-    }
-
-    .chat-controls-row {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .chat-controls-row input[type="range"] {
-      flex: 1;
-      accent-color: var(--purple-500);
-      cursor: pointer;
+      text-align: center;
     }
 
     .chat-play-btn {
@@ -358,9 +386,9 @@
       color: #fff;
       border: none;
       font-family: inherit;
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 600;
-      padding: 6px 16px;
+      padding: 9px 24px;
       border-radius: 100px;
       cursor: pointer;
       letter-spacing: 0.3px;
@@ -728,7 +756,7 @@
     <span class="section-label">Interactive</span>
     <h2 class="section-title">Watch the AI Forget &#x1F41F;</h2>
     <p>
-      Here&rsquo;s a (lightly dramatised) chat between a history teacher and an AI. This particular AI has a tiny context window: a whiteboard with room for just <strong>60 tokens</strong> &mdash; and as you&rsquo;ll remember from last edition, every message costs a few. Drag the slider (or hit play) and watch what happens when the whiteboard fills up&hellip;
+      Here&rsquo;s a (lightly dramatised) chat between a history teacher and an AI. This particular AI has a tiny context window: a whiteboard with room for just <strong>60 tokens</strong> &mdash; and as you&rsquo;ll remember from last edition, every message costs a few. Hit play and watch the conversation unfold. When the whiteboard fills up, something has to go&hellip;
     </p>
 
     <div class="chat-demo">
@@ -741,25 +769,45 @@
       </div>
 
       <div class="chat-stage" id="chat-stage">
-        <div class="context-frame" id="context-frame"><span class="context-frame-label">What the AI can see</span></div>
-        <div class="chat-msg teacher" data-i="1" data-tok="12"><div class="chat-bubble">Plan me a Year 8 lesson on the Battle of Hastings.<span class="tok">12 tokens</span></div></div>
-        <div class="chat-msg ai" data-i="2" data-tok="16"><div class="chat-bubble">Here you go &mdash; a starter, a source analysis task and a plenary. &#x2694;&#xFE0F;<span class="tok">16 tokens</span></div></div>
-        <div class="chat-msg teacher" data-i="3" data-tok="8"><div class="chat-bubble">Make the starter a retrieval quiz.<span class="tok">8 tokens</span></div></div>
-        <div class="chat-msg ai" data-i="4" data-tok="9"><div class="chat-bubble">Done &mdash; five quick-fire questions added.<span class="tok">9 tokens</span></div></div>
-        <div class="chat-msg teacher" data-i="5" data-tok="9"><div class="chat-bubble">Now add a card sort on the causes.<span class="tok">9 tokens</span></div></div>
-        <div class="chat-msg ai" data-i="6" data-tok="10"><div class="chat-bubble">Added &mdash; 12 cards across three categories.<span class="tok">10 tokens</span></div></div>
-        <div class="chat-msg teacher" data-i="7" data-tok="10"><div class="chat-bubble">Brilliant. Turn the whole lesson into a worksheet.<span class="tok">10 tokens</span></div></div>
-        <div class="chat-msg ai" data-i="8" data-tok="18"><div class="chat-bubble">Of course! Quick question &mdash; which battle is this for, and what year group? &#x1F605;<span class="tok">18 tokens</span></div></div>
+        <div class="context-frame hidden" id="context-frame"><span class="context-frame-label">What the AI can see</span></div>
+        <div class="chat-msg teacher" data-tok="12">
+          <div class="chat-bubble"><span class="chat-text">Plan me a Year 8 lesson on the Battle of Hastings.</span><span class="tok">12 tokens</span></div>
+          <div class="chat-stub">&#x1F9FD; <s>Plan me a Year 8 lesson&hellip;</s> &mdash; wiped off the whiteboard</div>
+        </div>
+        <div class="chat-msg ai" data-tok="16">
+          <div class="chat-bubble"><span class="chat-text">Here you go &mdash; a starter, a source analysis task and a plenary. &#x2694;&#xFE0F;</span><span class="tok">16 tokens</span></div>
+          <div class="chat-stub">&#x1F9FD; <s>Here you go &mdash; a starter&hellip;</s> &mdash; wiped off the whiteboard</div>
+        </div>
+        <div class="chat-msg teacher" data-tok="8">
+          <div class="chat-bubble"><span class="chat-text">Make the starter a retrieval quiz.</span><span class="tok">8 tokens</span></div>
+          <div class="chat-stub">&#x1F9FD; <s>Make the starter a retrieval&hellip;</s> &mdash; wiped off the whiteboard</div>
+        </div>
+        <div class="chat-msg ai" data-tok="9">
+          <div class="chat-bubble"><span class="chat-text">Done &mdash; five quick-fire questions added.</span><span class="tok">9 tokens</span></div>
+          <div class="chat-stub">&#x1F9FD; <s>Done &mdash; five quick-fire&hellip;</s> &mdash; wiped off the whiteboard</div>
+        </div>
+        <div class="chat-msg teacher" data-tok="9">
+          <div class="chat-bubble"><span class="chat-text">Now add a card sort on the causes.</span><span class="tok">9 tokens</span></div>
+          <div class="chat-stub">&#x1F9FD; <s>Now add a card sort&hellip;</s> &mdash; wiped off the whiteboard</div>
+        </div>
+        <div class="chat-msg ai" data-tok="10">
+          <div class="chat-bubble"><span class="chat-text">Added &mdash; 12 cards across three categories.</span><span class="tok">10 tokens</span></div>
+          <div class="chat-stub">&#x1F9FD; <s>Added &mdash; 12 cards&hellip;</s> &mdash; wiped off the whiteboard</div>
+        </div>
+        <div class="chat-msg teacher" data-tok="10">
+          <div class="chat-bubble"><span class="chat-text">Brilliant. Turn the whole lesson into a worksheet.</span><span class="tok">10 tokens</span></div>
+          <div class="chat-stub">&#x1F9FD; <s>Brilliant. Turn the whole&hellip;</s> &mdash; wiped off the whiteboard</div>
+        </div>
+        <div class="chat-msg ai" data-tok="18">
+          <div class="chat-bubble"><span class="chat-text">Of course! Quick question &mdash; which battle is this for, and what year group? &#x1F605;</span><span class="tok">18 tokens</span></div>
+          <div class="chat-stub">&#x1F9FD; <s>Of course! Quick question&hellip;</s> &mdash; wiped off the whiteboard</div>
+        </div>
       </div>
 
       <div class="chat-controls">
-        <label for="chat-slider">Drag to play out the conversation &#x1F447;</label>
-        <div class="chat-controls-row">
-          <input type="range" id="chat-slider" min="1" max="8" step="1" value="1" aria-label="Conversation progress" />
-          <button type="button" id="chat-play" class="chat-play-btn">&#x25B6; Play</button>
-        </div>
+        <button type="button" id="chat-play" class="chat-play-btn">&#x25B6; Play the conversation</button>
       </div>
-      <p class="chat-status" id="chat-status"></p>
+      <p class="chat-status" id="chat-status" aria-live="polite">Press play to watch the AI&rsquo;s whiteboard fill up.</p>
     </div>
 
     <p style="margin-top: 18px; font-size: 13px; color: var(--text-muted);">
@@ -973,90 +1021,169 @@
 <script>
 (function () {
   var CAP = 60;
-  var slider = document.getElementById('chat-slider');
   var status = document.getElementById('chat-status');
   var stage = document.getElementById('chat-stage');
   var frame = document.getElementById('context-frame');
   var meterFill = document.getElementById('meter-fill');
   var meterCount = document.getElementById('meter-count');
   var playBtn = document.getElementById('chat-play');
-  var messages = stage.querySelectorAll('.chat-msg');
-  var tokens = {};
-  messages.forEach(function (msg) {
-    tokens[parseInt(msg.getAttribute('data-i'), 10)] = parseInt(msg.getAttribute('data-tok'), 10);
+  var msgs = Array.prototype.slice.call(stage.querySelectorAll('.chat-msg'));
+  var TYPING_DOTS = '<span class="typing-dots"><span></span><span></span><span></span></span>';
+
+  // Remember each message's full text, then blank the page for playback
+  var data = msgs.map(function (el) {
+    return {
+      el: el,
+      textEl: el.querySelector('.chat-text'),
+      fullText: el.querySelector('.chat-text').textContent,
+      tok: parseInt(el.getAttribute('data-tok'), 10),
+      isTeacher: el.classList.contains('teacher')
+    };
   });
 
-  function stateFor(n) {
-    var total = 0;
-    for (var i = 1; i <= n; i++) total += tokens[i];
-    var evicted = 0;
-    while (total > CAP) { evicted++; total -= tokens[evicted]; }
-    return { evicted: evicted, total: total };
+  var playing = false;
+  var total = 0;
+  var evictedCount = 0;
+  var shownCount = 0;
+
+  function setMeter(value, over) {
+    meterCount.textContent = value + ' / ' + CAP + ' tokens' + (over ? ' 😬' : '');
+    meterFill.style.width = Math.min(100, Math.round(value / CAP * 100)) + '%';
+    meterFill.classList.toggle('warn', !over && value >= CAP * 0.75);
+    meterFill.classList.toggle('over', !!over);
   }
 
-  function update() {
-    var n = parseInt(slider.value, 10);
-    var s = stateFor(n);
+  function setStatus(html) { status.innerHTML = html; }
 
-    messages.forEach(function (msg) {
-      var i = parseInt(msg.getAttribute('data-i'), 10);
-      msg.classList.toggle('hidden', i > n);
-      msg.classList.toggle('forgotten', i <= s.evicted);
+  function positionFrame() {
+    if (evictedCount >= shownCount) { frame.classList.add('hidden'); return; }
+    var first = data[evictedCount].el;
+    var last = data[shownCount - 1].el;
+    var top = first.offsetTop - 6;
+    frame.classList.remove('hidden');
+    frame.style.top = top + 'px';
+    frame.style.height = ((last.offsetTop + last.offsetHeight + 6) - top) + 'px';
+  }
+
+  function follow(el) {
+    if (el.scrollIntoView) el.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }
+
+  function reset() {
+    total = 0;
+    evictedCount = 0;
+    shownCount = 0;
+    data.forEach(function (d) {
+      d.el.classList.add('hidden');
+      d.el.classList.remove('forgotten', 'counted');
+      d.textEl.textContent = d.fullText;
     });
+    frame.classList.add('hidden');
+    setMeter(0, false);
+  }
 
-    var first = stage.querySelector('.chat-msg[data-i="' + (s.evicted + 1) + '"]');
-    var last = stage.querySelector('.chat-msg[data-i="' + n + '"]');
-    if (first && last) {
-      var top = first.offsetTop - 6;
-      frame.style.top = top + 'px';
-      frame.style.height = ((last.offsetTop + last.offsetHeight + 6) - top) + 'px';
+  function typeText(d, done) {
+    var chars = Array.from ? Array.from(d.fullText) : d.fullText.split('');
+    var i = 0;
+    d.textEl.textContent = '';
+    var t = setInterval(function () {
+      i++;
+      d.textEl.textContent = chars.slice(0, i).join('');
+      if (i >= chars.length) { clearInterval(t); done(); }
+    }, 26);
+  }
+
+  function statusAfter(index) {
+    switch (index) {
+      case 0: return '12 / 60 tokens &mdash; plenty of room on the whiteboard. &#x1F60C;';
+      case 1: case 2: case 3: return 'Still fits &mdash; the AI can see the whole conversation.';
+      case 4: return '54 / 60 &mdash; the whiteboard is nearly full&hellip;';
     }
+    return null;
+  }
 
-    meterCount.textContent = s.total + ' / ' + CAP + ' tokens';
-    meterFill.style.width = Math.round(s.total / CAP * 100) + '%';
-    meterFill.classList.toggle('warn', s.evicted > 0 || s.total >= CAP * 0.9);
-
-    if (s.evicted === 0) {
-      if (n === 1) {
-        status.innerHTML = '12 / 60 tokens &mdash; plenty of room on the whiteboard. &#x1F60C;';
-      } else if (n < 5) {
-        status.innerHTML = 'Still fits &mdash; the AI can see the whole conversation.';
-      } else {
-        status.innerHTML = s.total + ' / 60 &mdash; the whiteboard is nearly full&hellip;';
-      }
-    } else if (s.evicted === 1) {
-      status.innerHTML = 'Full! The oldest message just got wiped &mdash; &lsquo;Year 8&rsquo; and &lsquo;Battle of Hastings&rsquo; are gone. &#x1F44B;';
-    } else if (s.evicted === 2) {
-      status.innerHTML = 'Wiped again &mdash; the AI&rsquo;s own first lesson plan has vanished off the board.';
-    } else {
-      status.innerHTML = '&lsquo;Which battle is this for?&rsquo; It&rsquo;s not being daft &mdash; the answer simply isn&rsquo;t on its whiteboard any more. &#x1F41F;';
+  function evictionStatus() {
+    switch (evictedCount) {
+      case 1: return 'Wiped! &lsquo;Year 8&rsquo; and &lsquo;Battle of Hastings&rsquo; are gone. &#x1F44B;';
+      case 2: return 'Wiped again &mdash; the AI&rsquo;s own first lesson plan has vanished off the board.';
+      default: return 'And another one goes&hellip;';
     }
   }
 
-  slider.addEventListener('input', update);
-  window.addEventListener('resize', update);
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(update);
+  function playMessage(index) {
+    if (index >= data.length) {
+      setStatus('&lsquo;Which battle is this for?&rsquo; It&rsquo;s not being daft &mdash; the answer simply isn&rsquo;t on its whiteboard any more. &#x1F41F;');
+      playing = false;
+      playBtn.disabled = false;
+      playBtn.innerHTML = '&#x21BA; Replay';
+      return;
+    }
 
-  var playTimer = null;
+    var d = data[index];
+    d.el.classList.remove('hidden');
+    shownCount = index + 1;
+
+    function afterText() {
+      // Count the message: chip appears, meter rises (possibly over budget)
+      setTimeout(function () {
+        d.el.classList.add('counted');
+        total += d.tok;
+        var over = total > CAP;
+        setMeter(total, over);
+        positionFrame();
+
+        if (!over) {
+          var s = statusAfter(index);
+          if (s) setStatus(s);
+          setTimeout(function () { playMessage(index + 1); }, 900);
+          return;
+        }
+
+        // Over budget: let it sink in, then wipe the oldest message(s)
+        setStatus(total + ' tokens won&rsquo;t fit on a 60-token board. Something has to go&hellip;');
+        setTimeout(function () {
+          while (total > CAP) {
+            data[evictedCount].el.classList.add('forgotten');
+            total -= data[evictedCount].tok;
+            evictedCount++;
+          }
+          setMeter(total, false);
+          positionFrame();
+          setStatus(evictionStatus());
+          setTimeout(function () { playMessage(index + 1); }, 1100);
+        }, 1300);
+      }, 250);
+    }
+
+    if (d.isTeacher) {
+      d.textEl.textContent = '';
+      positionFrame();
+      follow(d.el);
+      typeText(d, afterText);
+    } else {
+      d.textEl.innerHTML = TYPING_DOTS;
+      positionFrame();
+      follow(d.el);
+      setTimeout(function () {
+        d.textEl.textContent = d.fullText;
+        positionFrame();
+        follow(d.el);
+        afterText();
+      }, 1400);
+    }
+  }
+
   playBtn.addEventListener('click', function () {
-    if (playTimer) return;
+    if (playing) return;
+    playing = true;
     playBtn.disabled = true;
-    slider.value = 1;
-    update();
-    playTimer = setInterval(function () {
-      var n = parseInt(slider.value, 10);
-      if (n >= 8) {
-        clearInterval(playTimer);
-        playTimer = null;
-        playBtn.disabled = false;
-        return;
-      }
-      slider.value = n + 1;
-      update();
-    }, 1100);
+    reset();
+    setStatus('&#x1F3AC; A teacher opens a chat with a 60-token AI&hellip;');
+    setTimeout(function () { playMessage(0); }, 700);
   });
 
-  update();
+  window.addEventListener('resize', positionFrame);
+  reset();
 })();
 </script>
 
