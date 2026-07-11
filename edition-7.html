@@ -204,11 +204,80 @@
       margin-top: 18px;
     }
 
+    .context-meter { margin-bottom: 20px; }
+
+    .context-meter-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--purple-700);
+      margin-bottom: 6px;
+    }
+
+    .context-meter-label strong {
+      font-size: 13px;
+      color: var(--purple-700);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .context-meter-track {
+      height: 10px;
+      background: var(--purple-200);
+      border-radius: 100px;
+      overflow: hidden;
+    }
+
+    .context-meter-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--purple-500);
+      border-radius: 100px;
+      transition: width 0.4s ease, background-color 0.4s ease;
+    }
+
+    .context-meter-fill.warn { background: #ff9800; }
+
+    .chat-stage {
+      position: relative;
+      padding: 10px 8px;
+    }
+
+    .context-frame {
+      position: absolute;
+      left: 0;
+      right: 0;
+      border: 2px solid var(--purple-500);
+      background: rgba(142, 68, 173, 0.05);
+      border-radius: 12px;
+      pointer-events: none;
+      transition: top 0.4s ease, height 0.4s ease;
+      z-index: 1;
+    }
+
+    .context-frame-label {
+      position: absolute;
+      top: -9px;
+      right: 12px;
+      background: var(--purple-500);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 2px 10px;
+      border-radius: 100px;
+      white-space: nowrap;
+    }
+
     .chat-msg {
       display: flex;
       margin-bottom: 10px;
-      transition: opacity 0.3s;
+      transition: opacity 0.4s, filter 0.4s;
     }
+
+    .chat-msg:last-child { margin-bottom: 0; }
 
     .chat-msg.teacher { justify-content: flex-end; }
 
@@ -233,34 +302,32 @@
       border-bottom-left-radius: 4px;
     }
 
+    .tok {
+      display: block;
+      width: fit-content;
+      margin-top: 6px;
+      font-size: 10.5px;
+      font-weight: 600;
+      padding: 1px 8px;
+      border-radius: 100px;
+    }
+
+    .chat-msg.teacher .tok {
+      background: rgba(255, 255, 255, 0.18);
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .chat-msg.ai .tok {
+      background: var(--purple-100);
+      color: var(--purple-600);
+    }
+
     .chat-msg.hidden { display: none; }
 
     .chat-msg.forgotten {
       opacity: 0.3;
       filter: grayscale(1);
     }
-
-    .chat-divider {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      color: var(--purple-500);
-      margin: 14px 0;
-      white-space: nowrap;
-    }
-
-    .chat-divider::before,
-    .chat-divider::after {
-      content: '';
-      flex: 1;
-      border-top: 2px dashed var(--purple-300);
-    }
-
-    .chat-divider.hidden { display: none; }
 
     .chat-controls {
       margin-top: 18px;
@@ -274,11 +341,34 @@
       margin-bottom: 6px;
     }
 
-    .chat-controls input[type="range"] {
-      width: 100%;
+    .chat-controls-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .chat-controls-row input[type="range"] {
+      flex: 1;
       accent-color: var(--purple-500);
       cursor: pointer;
     }
+
+    .chat-play-btn {
+      background: var(--purple-500);
+      color: #fff;
+      border: none;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 16px;
+      border-radius: 100px;
+      cursor: pointer;
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+    }
+
+    .chat-play-btn:hover { background: var(--purple-600); }
+    .chat-play-btn:disabled { opacity: 0.6; cursor: default; }
 
     .chat-status {
       font-size: 13px;
@@ -580,9 +670,8 @@
 
   <!-- MEME BANNER -->
   <div class="meme-banner">
-    <img src="tom-bernie-summer.jpg" alt="Tom as Bernie Sanders in mittens and a winter coat, once again asking" style="max-width:280px; height:auto; border-radius:10px; margin-bottom:14px;" />
-    <div class="meme-text">&ldquo;&hellip;to remember what I said 15 prompts ago.&rdquo;</div>
-    <div class="meme-attribution">Me, to ChatGPT, at 4pm on a Sunday. Why does it forget? Scroll down to Scary Words. (And yes, this image is AI-made &mdash; see the Tool Spotlight.)</div>
+    <img src="tom-bernie-summer.jpg" alt="Meme of Tom in a winter coat captioned: I am once again asking you to remember what I said 15 prompts ago" style="max-width:280px; height:auto; border-radius:10px; margin-bottom:14px;" />
+    <div class="meme-attribution">Me, to ChatGPT, at 4pm on a Sunday. Why does it forget? Scroll down to Scary Words. (Meme made with Nano Banana &mdash; see the Tool Spotlight.)</div>
   </div>
 
   <!-- INTRO -->
@@ -639,30 +728,42 @@
     <span class="section-label">Interactive</span>
     <h2 class="section-title">Watch the AI Forget &#x1F41F;</h2>
     <p>
-      Here&rsquo;s a (lightly dramatised) chat between a history teacher and an AI. This particular AI has a tiny context window: it can only see the <strong>last 4 messages</strong>. Drag the slider to continue the conversation and watch the older messages fall out of its memory&hellip;
+      Here&rsquo;s a (lightly dramatised) chat between a history teacher and an AI. This particular AI has a tiny context window: a whiteboard with room for just <strong>60 tokens</strong> &mdash; and as you&rsquo;ll remember from last edition, every message costs a few. Drag the slider (or hit play) and watch what happens when the whiteboard fills up&hellip;
     </p>
 
     <div class="chat-demo">
-      <div id="chat-messages">
-        <div class="chat-msg teacher" data-i="1"><div class="chat-bubble">Plan me a Year 8 lesson on the Battle of Hastings.</div></div>
-        <div class="chat-msg ai" data-i="2"><div class="chat-bubble">Here you go &mdash; a starter, a source analysis task and a plenary. &#x2694;&#xFE0F;</div></div>
-        <div class="chat-msg teacher" data-i="3"><div class="chat-bubble">Make the starter a retrieval quiz.</div></div>
-        <div class="chat-msg ai" data-i="4"><div class="chat-bubble">Done &mdash; five quick-fire questions on 1066.</div></div>
-        <div class="chat-msg teacher" data-i="5"><div class="chat-bubble">Now add a card sort on the causes.</div></div>
-        <div class="chat-msg ai" data-i="6"><div class="chat-bubble">Added &mdash; 12 cards across three categories.</div></div>
-        <div class="chat-msg teacher" data-i="7"><div class="chat-bubble">Brilliant. Turn the whole lesson into a worksheet.</div></div>
-        <div class="chat-msg ai" data-i="8"><div class="chat-bubble">Of course! Quick question &mdash; which battle is this for, and what year group? &#x1F605;</div></div>
+      <div class="context-meter">
+        <div class="context-meter-label">
+          <span>&#x1F9E0; The AI&rsquo;s whiteboard</span>
+          <strong id="meter-count">0 / 60 tokens</strong>
+        </div>
+        <div class="context-meter-track"><div class="context-meter-fill" id="meter-fill"></div></div>
+      </div>
+
+      <div class="chat-stage" id="chat-stage">
+        <div class="context-frame" id="context-frame"><span class="context-frame-label">What the AI can see</span></div>
+        <div class="chat-msg teacher" data-i="1" data-tok="12"><div class="chat-bubble">Plan me a Year 8 lesson on the Battle of Hastings.<span class="tok">12 tokens</span></div></div>
+        <div class="chat-msg ai" data-i="2" data-tok="16"><div class="chat-bubble">Here you go &mdash; a starter, a source analysis task and a plenary. &#x2694;&#xFE0F;<span class="tok">16 tokens</span></div></div>
+        <div class="chat-msg teacher" data-i="3" data-tok="8"><div class="chat-bubble">Make the starter a retrieval quiz.<span class="tok">8 tokens</span></div></div>
+        <div class="chat-msg ai" data-i="4" data-tok="9"><div class="chat-bubble">Done &mdash; five quick-fire questions added.<span class="tok">9 tokens</span></div></div>
+        <div class="chat-msg teacher" data-i="5" data-tok="9"><div class="chat-bubble">Now add a card sort on the causes.<span class="tok">9 tokens</span></div></div>
+        <div class="chat-msg ai" data-i="6" data-tok="10"><div class="chat-bubble">Added &mdash; 12 cards across three categories.<span class="tok">10 tokens</span></div></div>
+        <div class="chat-msg teacher" data-i="7" data-tok="10"><div class="chat-bubble">Brilliant. Turn the whole lesson into a worksheet.<span class="tok">10 tokens</span></div></div>
+        <div class="chat-msg ai" data-i="8" data-tok="18"><div class="chat-bubble">Of course! Quick question &mdash; which battle is this for, and what year group? &#x1F605;<span class="tok">18 tokens</span></div></div>
       </div>
 
       <div class="chat-controls">
-        <label for="chat-slider">Drag to continue the conversation &#x1F447;</label>
-        <input type="range" id="chat-slider" min="4" max="8" step="1" value="4" />
+        <label for="chat-slider">Drag to play out the conversation &#x1F447;</label>
+        <div class="chat-controls-row">
+          <input type="range" id="chat-slider" min="1" max="8" step="1" value="1" aria-label="Conversation progress" />
+          <button type="button" id="chat-play" class="chat-play-btn">&#x25B6; Play</button>
+        </div>
       </div>
       <p class="chat-status" id="chat-status"></p>
     </div>
 
     <p style="margin-top: 18px; font-size: 13px; color: var(--text-muted);">
-      Real context windows hold thousands of messages, not four &mdash; but the mechanism is exactly the same. The moment something leaves the window, the AI doesn&rsquo;t just forget it. It has no idea it ever knew it.
+      Real context windows hold hundreds of thousands of tokens, not 60 &mdash; but the mechanism is exactly the same. The moment a message slides out of the window, the AI doesn&rsquo;t just forget it. It has no idea it ever knew it.
     </p>
   </section>
 
@@ -871,44 +972,90 @@
 
 <script>
 (function () {
+  var CAP = 60;
   var slider = document.getElementById('chat-slider');
   var status = document.getElementById('chat-status');
-  var container = document.getElementById('chat-messages');
-  var messages = container.querySelectorAll('.chat-msg');
-  var WINDOW_SIZE = 4;
+  var stage = document.getElementById('chat-stage');
+  var frame = document.getElementById('context-frame');
+  var meterFill = document.getElementById('meter-fill');
+  var meterCount = document.getElementById('meter-count');
+  var playBtn = document.getElementById('chat-play');
+  var messages = stage.querySelectorAll('.chat-msg');
+  var tokens = {};
+  messages.forEach(function (msg) {
+    tokens[parseInt(msg.getAttribute('data-i'), 10)] = parseInt(msg.getAttribute('data-tok'), 10);
+  });
 
-  var divider = document.createElement('div');
-  divider.className = 'chat-divider';
-  divider.innerHTML = '&#x1F9E0; The AI&rsquo;s memory starts here';
+  function stateFor(n) {
+    var total = 0;
+    for (var i = 1; i <= n; i++) total += tokens[i];
+    var evicted = 0;
+    while (total > CAP) { evicted++; total -= tokens[evicted]; }
+    return { evicted: evicted, total: total };
+  }
 
   function update() {
     var n = parseInt(slider.value, 10);
-    var forgottenCount = Math.max(0, n - WINDOW_SIZE);
+    var s = stateFor(n);
 
     messages.forEach(function (msg) {
       var i = parseInt(msg.getAttribute('data-i'), 10);
       msg.classList.toggle('hidden', i > n);
-      msg.classList.toggle('forgotten', i <= forgottenCount);
+      msg.classList.toggle('forgotten', i <= s.evicted);
     });
 
-    if (forgottenCount > 0) {
-      var firstRemembered = container.querySelector('.chat-msg[data-i="' + (forgottenCount + 1) + '"]');
-      container.insertBefore(divider, firstRemembered);
-      divider.classList.remove('hidden');
-    } else if (divider.parentNode) {
-      divider.classList.add('hidden');
+    var first = stage.querySelector('.chat-msg[data-i="' + (s.evicted + 1) + '"]');
+    var last = stage.querySelector('.chat-msg[data-i="' + n + '"]');
+    if (first && last) {
+      var top = first.offsetTop - 6;
+      frame.style.top = top + 'px';
+      frame.style.height = ((last.offsetTop + last.offsetHeight + 6) - top) + 'px';
     }
 
-    if (n === 4) {
-      status.innerHTML = 'All 4 messages fit in the window &mdash; the AI remembers everything. So far, so good. &#x1F60C;';
-    } else if (n < 8) {
-      status.innerHTML = 'The oldest ' + (forgottenCount === 1 ? 'message has' : forgottenCount + ' messages have') + ' fallen out of the window. The AI can no longer see ' + (forgottenCount === 1 ? 'it' : 'them') + '&hellip;';
+    meterCount.textContent = s.total + ' / ' + CAP + ' tokens';
+    meterFill.style.width = Math.round(s.total / CAP * 100) + '%';
+    meterFill.classList.toggle('warn', s.evicted > 0 || s.total >= CAP * 0.9);
+
+    if (s.evicted === 0) {
+      if (n === 1) {
+        status.innerHTML = '12 / 60 tokens &mdash; plenty of room on the whiteboard. &#x1F60C;';
+      } else if (n < 5) {
+        status.innerHTML = 'Still fits &mdash; the AI can see the whole conversation.';
+      } else {
+        status.innerHTML = s.total + ' / 60 &mdash; the whiteboard is nearly full&hellip;';
+      }
+    } else if (s.evicted === 1) {
+      status.innerHTML = 'Full! The oldest message just got wiped &mdash; &lsquo;Year 8&rsquo; and &lsquo;Battle of Hastings&rsquo; are gone. &#x1F44B;';
+    } else if (s.evicted === 2) {
+      status.innerHTML = 'Wiped again &mdash; the AI&rsquo;s own first lesson plan has vanished off the board.';
     } else {
-      status.innerHTML = '&lsquo;Year 8&rsquo; and &lsquo;Battle of Hastings&rsquo; left the window ages ago &mdash; and the AI has no idea it ever knew them. &#x1F41F;';
+      status.innerHTML = '&lsquo;Which battle is this for?&rsquo; It&rsquo;s not being daft &mdash; the answer simply isn&rsquo;t on its whiteboard any more. &#x1F41F;';
     }
   }
 
   slider.addEventListener('input', update);
+  window.addEventListener('resize', update);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(update);
+
+  var playTimer = null;
+  playBtn.addEventListener('click', function () {
+    if (playTimer) return;
+    playBtn.disabled = true;
+    slider.value = 1;
+    update();
+    playTimer = setInterval(function () {
+      var n = parseInt(slider.value, 10);
+      if (n >= 8) {
+        clearInterval(playTimer);
+        playTimer = null;
+        playBtn.disabled = false;
+        return;
+      }
+      slider.value = n + 1;
+      update();
+    }, 1100);
+  });
+
   update();
 })();
 </script>
