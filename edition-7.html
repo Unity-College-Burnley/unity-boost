@@ -713,7 +713,7 @@
       This edition, Scary Words tackles the <strong>Context Window</strong> &mdash; the reason AI chatbots forget what you told them twenty minutes ago (complete with an interactive demo where you can watch one forget in real time). The Tool Spotlight finally answers the question I get asked most in the corridor: <em>&ldquo;how do you make those ridiculous pictures of yourself?&rdquo;</em> Say hello to <strong>Nano Banana</strong>. Yes, that&rsquo;s its real name.
     </p>
     <p>
-      We&rsquo;ve also got a look back at a genuinely brilliant year of AI at Unity, four fresh prompts (including two designed to make September Future You extremely grateful to July Current You), and some proper summer reading.
+      We&rsquo;ve also got hot-off-the-press photos from Inb4&rsquo;s visit to our Year 8s, a look back at a genuinely brilliant year of AI at Unity, four fresh prompts (including two designed to make September Future You extremely grateful to July Current You), and some proper summer reading.
     </p>
     <p>
       One last time for 25/26: let&rsquo;s get boosted!<br>
@@ -916,12 +916,30 @@
     <h2 class="section-title">Unity News &amp; Shout Outs &#x1F60D;</h2>
 
     <div class="news-card highlight">
+      <h3>&#x1F4BB; Hot Off the Press: Inb4 Comes to Unity!</h3>
+      <p>
+        Just when we thought the Inb4 story was wrapped up for the year, the team saved one last twist for the final week of term &mdash; this time bringing the challenge <em>to us</em>. Thirty of our <strong>Year 8s</strong> spent the morning in the IT suite tackling the <strong>MEGA Day Cyber Calendar Challenge</strong>, delivered in school by the Inb4 team.
+      </p>
+      <p>
+        The photos say it all &mdash; heads down, screens glowing, proper concentration. A brilliant way to round off the year. &#x1F44F;
+      </p>
+      <div style="display:flex; gap:10px; margin-top:14px;">
+        <img src="inb4-year8-1.jpg" alt="The Inb4 instructor presenting the MEGA Day Cyber Calendar Challenge to Year 8 students" style="width:49%; height:auto; border-radius:8px; object-fit:cover; cursor:pointer;" onclick="openLightbox(this.src)" />
+        <img src="inb4-year8-2.jpg" alt="Year 8 students working at computers during the Inb4 cyber challenge" style="width:49%; height:auto; border-radius:8px; object-fit:cover; cursor:pointer;" onclick="openLightbox(this.src)" />
+      </div>
+      <div style="display:flex; gap:10px; margin-top:10px;">
+        <img src="inb4-year8-3.jpg" alt="A row of Year 8 students concentrating at their screens" style="width:49%; height:auto; border-radius:8px; object-fit:cover; cursor:pointer;" onclick="openLightbox(this.src)" />
+        <img src="inb4-year8-4.jpg" alt="Two Year 8 students working through a challenge task together" style="width:49%; height:auto; border-radius:8px; object-fit:cover; cursor:pointer;" onclick="openLightbox(this.src)" />
+      </div>
+    </div>
+
+    <div class="news-card highlight">
       <h3>&#x1F393; That&rsquo;s a Wrap on 25/26!</h3>
       <p>
         Before we all sprint for the gates, it&rsquo;s worth pausing on what a year it&rsquo;s been for AI at Unity:
       </p>
       <ul class="year-review-list">
-        <li>&#x1F3C6; <strong>The Inb4 hat-trick:</strong> three year groups took on the Inb4 AI challenge this year &mdash; our Year 11s <strong>won the whole thing</strong> in the autumn, the Year 7s grabbed <strong>2nd and 3rd</strong> at Lancashire&rsquo;s MEGA in December, and our Year 9s flew the flag brilliantly in March. Whoever&rsquo;s up next season has a legacy to defend.</li>
+        <li>&#x1F3C6; <strong>The Inb4 grand slam:</strong> four year groups got the Inb4 treatment this year &mdash; our Year 11s <strong>won the whole thing</strong> in the autumn, the Year 7s grabbed <strong>2nd and 3rd</strong> at Lancashire&rsquo;s MEGA in December, our Year 9s flew the flag brilliantly in March, and our Year 8s rounded it all off with this week&rsquo;s in-school cyber challenge (see above). Whoever&rsquo;s up next season has a legacy to defend.</li>
         <li>&#x1F468;&#x200D;&#x1F3EB; <strong>Staff leading the way:</strong> from AI-designed Drama sets to ChatGPT-assisted English analysis, Gamma-built Science resources and the library&rsquo;s Canva poster glow-up &mdash; colleagues across the college quietly got on with using AI well. You&rsquo;re the reason this newsletter exists.</li>
         <li>&#x1F4EC; <strong>Unity Boost went digital:</strong> the newsletter moved from PDFs to a proper website this year. All seven editions live at <a href="https://unity-college-burnley.github.io/unity-boost/">the archive</a> if you fancy some light beach reading.</li>
       </ul>
@@ -1023,6 +1041,21 @@
   </footer>
 
 </div>
+
+<!-- Lightbox overlay -->
+<div id="lightbox" onclick="closeLightbox()" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:9999; cursor:pointer; justify-content:center; align-items:center;">
+  <img id="lightbox-img" src="" alt="" style="max-width:90%; max-height:90%; border-radius:8px; box-shadow:0 4px 30px rgba(0,0,0,0.5);" />
+</div>
+<script>
+function openLightbox(src) {
+  var lb = document.getElementById('lightbox');
+  document.getElementById('lightbox-img').src = src;
+  lb.style.display = 'flex';
+}
+function closeLightbox() {
+  document.getElementById('lightbox').style.display = 'none';
+}
+</script>
 
 <script>
 (function () {
